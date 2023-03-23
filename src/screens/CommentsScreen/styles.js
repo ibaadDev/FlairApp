@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { color } from "../../config/color";
 import {
     widthPercentageToDP as wp,
@@ -10,12 +10,15 @@ export const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'white'
     },
-    HederText:{
-        fontSize:hp('2.5'),
-        color:color.black,
-        marginLeft:wp('30')
+    upperView:{
+        flexDirection:'row',
     },
-    backarrowstyle:{
+    roundImage:{
+        borderRadius: Math.round(
+            Dimensions.get('window').width + Dimensions.get('window').height,
+          ),
+          width: Dimensions.get('window').width * 0.13,
+          height: Dimensions.get('window').width * 0.13,
     }
 
 })

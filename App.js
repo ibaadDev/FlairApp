@@ -28,7 +28,7 @@ import Followers from './src/screens/FollowersScreen/Followers';
 
 
 
-
+//https://xd.adobe.com/view/adfdbf66-cce5-44aa-98ad-44df2f0019ae-f8ae/screen/b6fa581b-6a4a-4447-ad68-654223151399/
 
 function App(){
   const isDarkMode = useColorScheme() === 'dark';

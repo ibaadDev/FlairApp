@@ -23,9 +23,9 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import Comment from './src/screens/CommentsScreen/Comment';
-import Login from './src/screens/LoginScreen/Login';
-import SignUp from './src/screens/RegisterScreen/SIgnUp';
+import { screens } from './src/screens';
+import Followers from './src/screens/FollowersScreen/Followers';
+
 
 
 
@@ -70,7 +70,7 @@ function App(){
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-    <Comment/>
+      <screens.Feed/>
     </>
   );
 }

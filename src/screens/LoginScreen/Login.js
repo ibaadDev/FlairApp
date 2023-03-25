@@ -8,10 +8,57 @@ import {
     heightPercentageToDP as hp,
   } from 'react-native-responsive-screen';
 import { ButtonThemeComp } from '../../components/ButtonThemeComp/ButtonThemeComp'
+import { errorMessage } from '../../config/NotificationMessage'
+import { errorHandler } from '../../config/helperFunction'
 
-const Login = () => {
+const Login = ({navigation}) => {
     const handleClick = () => setShow(!show);
   const [show, setShow] = useState(false);
+  const [isloading, setIsloading] = useState(false);
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+  });
+  const {email, password} = loginData;
+
+  // const dispatch = useDispatch();
+  const updateState = data => setLoginData(() => ({...loginData, ...data}));
+  const loginUserFun = () => {
+    setIsloading(true);
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (
+      email != '' &&
+      password != '' &&
+      reg.test(email) === true &&
+      password.length >= 8
+    ) {
+      let body = {
+        email: email,
+        password: password,
+      };
+      axios
+        .post(LoginUrl, body)
+        .then(function (res) {
+          setIsloading(false);
+          // dispatch({
+          //   type: types.LoginType,
+          //   payload: res.data.data,
+          // });
+          // dispatch({
+          //   type: types.LoginTypeToken,
+          //   payload: token,
+          // });
+        })
+        .catch(function (error) {
+          setIsloading(false);
+          errorMessage(errorHandler(error));
+        });
+    } else {
+      setIsloading(false);
+      errorMessage('Please type correct information');
+    }
+  };
+
   return (
     <View style={styles.mainContainer} >
        <View style={styles.logo}>
@@ -20,16 +67,17 @@ const Login = () => {
        </View>
         <LoginInputComp
         placeholder={'Username'}
-        value=''
-          // onChangeText={e => updateState({password: e})}
+        value={email}
+        onChangeText={e => updateState({email: e})}
         />
         <LoginInputComp
          secureTextEntry={show ? false : true}
         placeholder={'Password'}
         Ionicons={true}
         eyeIconName={show ? 'eye-outline' : 'eye-off-outline'}
-        value=''
-        // onChangeText={e => updateState({password: e})}
+        eyeIconPress={()=>handleClick()}
+        value={password}
+        onChangeText={e => updateState({password: e})}
         color={color.black}
         eyeIconSize={hp('2.8')}
         Iconcolor2={color.themeColorlight}
@@ -37,7 +85,7 @@ const Login = () => {
 
         <TouchableOpacity
         style={styles.forgetbtnstyle}
-        //   onPress={() => navigation.navigate('MenteebottomTabs')}
+          onPress={() => navigation.navigate('ForgetScreen')}
         >
           <Text style={styles.forgettext}>Forget password?</Text>
         </TouchableOpacity>
@@ -45,14 +93,14 @@ const Login = () => {
         <ButtonThemeComp
         style={styles.signBtn}
         text={'Login In'}
-        // onPress={() => loginUserFun()}
+        onPress={() => loginUserFun()}
       />
       <View style={styles.creatacc}>
           <Text style={{
             fontSize:hp('2'),
             color:color.greyTextcolor
           }}>Don't have an account?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{navigation.navigate('SignUp')}}>
             <Text style={styles.forgettext}>Sign Up</Text>
           </TouchableOpacity>
         </View>

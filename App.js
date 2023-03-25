@@ -25,7 +25,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { screens } from './src/screens';
 import Followers from './src/screens/FollowersScreen/Followers';
-
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import StackNavigatior from './src/navigations/naviagation';
+import FlashMessage from 'react-native-flash-message';
 
 
 //https://xd.adobe.com/view/adfdbf66-cce5-44aa-98ad-44df2f0019ae-f8ae/screen/b6fa581b-6a4a-4447-ad68-654223151399/
@@ -38,39 +40,15 @@ function App(){
   };
 
   return (
-    // <SafeAreaView style={backgroundStyle}>
-      
-    //   <ScrollView
-    //     contentInsetAdjustmentBehavior="automatic"
-    //     style={backgroundStyle}>
-    //     <Header />
-    //     <View
-    //       style={{
-    //         backgroundColor: isDarkMode ? Colors.black : Colors.white,
-    //       }}>
-    //       <Section title="Step One">
-    //         Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-    //         screen and then come back to see your edits.
-    //       </Section>
-    //       <Section title="See Your Changes">
-    //         <ReloadInstructions />
-    //       </Section>
-    //       <Section title="Debug">
-    //         <DebugInstructions />
-    //       </Section>
-    //       <Section title="Learn More">
-    //         Read the docs to discover what to do next:
-    //       </Section>
-    //       <LearnMoreLinks />
-    //     </View>
-    //   </ScrollView>
-    // </SafeAreaView>
     <>
     <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <screens.Feed/>
+      <NavigationContainer>
+        <StackNavigatior/>
+      </NavigationContainer>
+      <FlashMessage position="top" />
     </>
   );
 }

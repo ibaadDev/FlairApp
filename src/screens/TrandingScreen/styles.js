@@ -61,4 +61,19 @@ import {
         fontWeight: 'bold',
         fontSize: hp('2'),
       },
+      searchbar:{
+        backgroundColor:'#EFEFEF',
+        height:hp('5'),
+        width:wp('95'),
+        alignSelf:'center',
+        borderRadius:10,
+        flexDirection:'row',
+        alignItems:'center',
+        paddingHorizontal:wp('5')
+      },
+      placeholderstyle:{
+        fontSize:hp('2'),
+        marginLeft:wp('2'),
+        width:wp('75')
+      }
 })

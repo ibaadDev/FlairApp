@@ -10,20 +10,18 @@ import {
 } from 'react-native-responsive-screen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Dimensions, StyleSheet} from 'react-native';
-import {Colors} from '../theme/Variables';
-import * as Screens from '../screens/index';
+import { color } from '../config/color';
+import { screens } from '../screens';
 
 const Tab = createBottomTabNavigator();
 function MybottomTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Profile"
+      initialRouteName="feed"
       screenOptions={({route}) => ({
-        tabBarActiveTintColor: Colors.black,
-        tabBarInactiveTintColor: Colors.blueMenu,
+        tabBarActiveTintColor: color.black,
+        tabBarInactiveTintColor: color.blueMenu,
         headerShown: false,
-        // tabBarActiveBackgroundColor: '#EFEFEF',
-        // tabBarInactiveBackgroundColor: '#EFEFEF',
         tabBarHideOnKeyboard: true,
         swipeEnabled: true,
         animationEnabled: true,
@@ -55,7 +53,7 @@ function MybottomTabs() {
         },
       })}>
       <Tab.Screen
-        name="Home"
+        name="feed"
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <AntDesign
@@ -76,15 +74,15 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={Screens.HomeScreen}
+        component={screens.Login}
       />
       <Tab.Screen
         name="Category"
         options={{
           tabBarIcon: ({focused, color, size}) => (
-            <Ionicons
+            <MaterialCommunityIcons
               style={{marginTop: hp('1')}}
-              name={color == '#ffff' ? 'home' : 'home-outline'}
+              name={color == '#ffff' ? 'spotlight' : 'spotlight'}
               color={color === '#000000' ? '#561CE0' : '#000000'}
               size={hp('3.5')}
             />
@@ -99,7 +97,7 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={Screens.GalleryScreen}
+        component={screens.Spotlight}
       />
 
       <Tab.Screen
@@ -123,7 +121,7 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={Screens.ConnectGalleryScreen}
+        component={screens.CreatePost}
       />
       <Tab.Screen
         name="Profile1"
@@ -146,7 +144,7 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={Screens.ConnectGalleryScreen}
+        component={screens.MyFollower}
       />
       <Tab.Screen
         name="Profile2"
@@ -169,7 +167,7 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={Screens.ConnectGalleryScreen}
+        component={screens.CreatePost}
       />
 
       {/* <Tab.Screen
@@ -200,7 +198,7 @@ export default MybottomTabs;
 
 const styles = StyleSheet.create({
   cartCircle: {
-    backgroundColor: Colors.blackDark,
+    backgroundColor: color.blackDark,
     position: 'absolute',
     bottom: hp('-2'),
     borderRadius: Math.round(
@@ -213,7 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cartInsideCircle: {
-    backgroundColor: Colors.barFaded,
+    backgroundColor: color.barFaded,
     position: 'absolute',
     borderRadius: Math.round(
       Dimensions.get('window').width + Dimensions.get('window').height,
@@ -231,6 +229,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     fontSize: hp('1.5'),
-    backgroundColor: Colors.backgroundBlue,
+    backgroundColor: color.backgroundBlue,
   },
 });

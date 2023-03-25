@@ -11,8 +11,18 @@ import {
       width:wp('100'),
       backgroundColor:'white'
     },
+    imagestyle:{
+        marginTop:hp('2'),
+        width:wp('88'),
+        height:hp('25'),
+        borderRadius:20
+     },
+     commintsView:{
+        flexDirection:'row',
+        marginVertical:hp('2')
+     },
     container: {
-        padding: 10,
+        padding: 20,
         margin:3,
         borderRadius:10,
         backgroundColor: '#F9F9F9',
@@ -34,7 +44,16 @@ import {
         fontSize: hp('2.5'),
       },
       text3Container: {
+        flexDirection:'row',
         width: wp('40'),
+      },
+      folowtxt:{
+        marginLeft:wp('2'),
+        fontSize:hp('2'),
+        color:'#561CE0'
+      },
+      text2:{
+        fontSize:hp('2')
       },
       text3: {
         letterSpacing: 0.2,

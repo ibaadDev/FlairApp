@@ -1,8 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import * as Screens from '../screens/index';
-
 import MybottomTabs from './bottomnavigation';
+import { screens } from '../screens';
 const Stack = createNativeStackNavigator();
 
 export default function StackNavigatior() {
@@ -14,11 +13,14 @@ export default function StackNavigatior() {
           headerShown: false,
         }}>
         <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
-        <Stack.Screen name="HomeScreen" component={Screens.HomeScreen} />
-        <Stack.Screen name="GalleryScreen" component={Screens.GalleryScreen} />
+        <Stack.Screen name='Login' component={screens.Login}/>
+        <Stack.Screen name='SignUp' component={screens.SignUp}/>
+        <Stack.Screen name='ForgetScreen' component={screens.ForgetScreen}/>
+        <Stack.Screen name="HomeScreen" component={screens.Feed} />
+        <Stack.Screen name="GalleryScreen" component={screens.Post} />
         <Stack.Screen
           name="ConnectGalleryScreen"
-          component={Screens.ConnectGalleryScreen}
+          component={screens.Post}
         />
         {/* <Stack.Screen
           name="Home"

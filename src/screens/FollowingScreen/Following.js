@@ -7,14 +7,14 @@ import {
   } from 'react-native-responsive-screen';
 import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
-const Followers = () => {
+const Following = () => {
   const data=[{isBool:true},{isBool:false},{isBool:false},{isBool:true},{isBool:true},{isBool:false}]
     // const [isBool, setBool] = useState(false);
   return (
     <View style={styles.mainContainer}>
       <HeaderComponent
       back={true}
-      name={'Followers'}
+      name={'Following'}
       />
     <FlatList
     data={data}
@@ -75,4 +75,4 @@ const Followers = () => {
   )
 }
 
-export default Followers
+export default Following

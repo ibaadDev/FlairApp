@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
         backgroundColor: color.white,
         justifyContent:'center',
         height: hp('9'),
-        bottom: 0,
+        bottom: hp('4'),
         width: wp('100'),
         paddingHorizontal: wp('10'),
       },

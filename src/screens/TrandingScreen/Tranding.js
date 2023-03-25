@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
 import {
@@ -7,15 +7,27 @@ import {
   } from 'react-native-responsive-screen';
 import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
-const Followers = () => {
-  const data=[{isBool:true},{isBool:false},{isBool:false},{isBool:true},{isBool:true},{isBool:false}]
-    // const [isBool, setBool] = useState(false);
-  return (
+import { color } from '../../config/color';
+const Tranding = () => {
+    const data =[{},{},{}]
+return(
     <View style={styles.mainContainer}>
       <HeaderComponent
       back={true}
-      name={'Followers'}
+      name={'Tranding'}
       />
+      <View style={styles.searchbar}>
+        <Image
+        source={require('../../images/Iconsearch.png')}
+        />
+        <TextInput
+        placeholder='Search'
+        placeholderTextColor={color.placeholdercolor}
+        // value=''
+        // onChangeText={}
+        style={styles.placeholderstyle}
+        />
+      </View>
     <FlatList
     data={data}
     contentContainerStyle={{marginBottom:hp('10')}}
@@ -32,9 +44,9 @@ const Followers = () => {
         <Text style={styles.text1}>Robin Waugh</Text>
         <Text style={styles.text2}>robinmusician</Text>
         <View style={styles.text3Container}>
-          {/* <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text3}>
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text3}>
             music always put me in goog mood when nobody see me
-          </Text> */}
+          </Text>
         </View>
       </View>
       <View
@@ -44,11 +56,11 @@ const Followers = () => {
           marginBottom: hp('2'),
         }}>
         <CircleButton
-          isBool={item.isBool}
-          texColor={item.isBool ? 'white' : 'white'}
-          bg={item.isBool ? '#561CE0' : '#561CE0'}
+          isBool={true}
+          texColor={ 'white'}
+          bg={ '#561CE0'}
           // onPress={() => setBool(prev => !prev)}
-          text={item.isBool ? 'Follow' : 'Follow'}
+          text={ 'Follow'}
         />
       </View>
     </View>
@@ -72,7 +84,6 @@ const Followers = () => {
     }}
     />
     </View>
-  )
+)
 }
-
-export default Followers
+export default Tranding

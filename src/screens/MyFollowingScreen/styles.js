@@ -34,7 +34,16 @@ import {
         fontSize: hp('2.5'),
       },
       text3Container: {
+        flexDirection:'row',
         width: wp('40'),
+      },
+      folowtxt:{
+        marginLeft:wp('2'),
+        fontSize:hp('2'),
+        color:'#561CE0'
+      },
+      text2:{
+        fontSize:hp('2')
       },
       text3: {
         letterSpacing: 0.2,

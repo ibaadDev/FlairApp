@@ -7,7 +7,7 @@ import {
   } from 'react-native-responsive-screen';
 import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
-const Followers = () => {
+const MyFollowing = () => {
   const data=[{isBool:true},{isBool:false},{isBool:false},{isBool:true},{isBool:true},{isBool:false}]
     // const [isBool, setBool] = useState(false);
   return (
@@ -30,8 +30,11 @@ const Followers = () => {
       />
       <View>
         <Text style={styles.text1}>Robin Waugh</Text>
-        <Text style={styles.text2}>robinmusician</Text>
         <View style={styles.text3Container}>
+        <Text style={styles.text2}>robinmusician</Text>
+        <Text style={styles.folowtxt}>Follow</Text>
+        </View>
+        <View style={styles.text3Container} >
           {/* <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text3}>
             music always put me in goog mood when nobody see me
           </Text> */}
@@ -44,11 +47,11 @@ const Followers = () => {
           marginBottom: hp('2'),
         }}>
         <CircleButton
-          isBool={item.isBool}
-          texColor={item.isBool ? 'white' : 'white'}
-          bg={item.isBool ? '#561CE0' : '#561CE0'}
+        //   isBool={i}
+          texColor={item.isBool ? 'grey' : 'grey'}
+          bg={item.isBool ? 'white' : 'white'}
           // onPress={() => setBool(prev => !prev)}
-          text={item.isBool ? 'Follow' : 'Follow'}
+          text={item.isBool ? 'Remove' : 'Remove'}
         />
       </View>
     </View>
@@ -75,4 +78,4 @@ const Followers = () => {
   )
 }
 
-export default Followers
+export default MyFollowing

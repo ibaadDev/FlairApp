@@ -12,36 +12,22 @@ export default function StackNavigatior() {
           animation: 'slide_from_left',
           headerShown: false,
         }}>
-        <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
         <Stack.Screen name='Login' component={screens.Login}/>
         <Stack.Screen name='SignUp' component={screens.SignUp}/>
         <Stack.Screen name='ForgetScreen' component={screens.ForgetScreen}/>
-        <Stack.Screen name="HomeScreen" component={screens.Feed} />
-        <Stack.Screen name="GalleryScreen" component={screens.Post} />
-        <Stack.Screen
-          name="ConnectGalleryScreen"
-          component={screens.Post}
-        />
-        {/* <Stack.Screen
-          name="Home"
-          component={screens.Home}
-        /> 
-         <Stack.Screen
-        name="Category"
-        component={screens.Category}
-      />
-         <Stack.Screen
-        name="Setting"
-        component={screens.Setting}
-      />
-         <Stack.Screen
-        name="CartList"
-        component={screens.CartList}
-      />
-         <Stack.Screen
-        name="CrudCartList"
-        component={screens.CrudCartList}
-      /> */}
+        <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
+        <Stack.Screen name="Feed" component={screens.Feed} />
+        <Stack.Screen name="Post" component={screens.Post} />
+        <Stack.Screen name="Comment" component={screens.Comment}/>
+        <Stack.Screen name="CreatePost" component={screens.CreatePost}/>
+        <Stack.Screen name="Followers" component={screens.Followers}/>
+        <Stack.Screen name="Tranding" component={screens.Tranding}/>
+        <Stack.Screen name="MyFollowing" component={screens.MyFollowing}/>
+        <Stack.Screen name="MyFollower" component={screens.MyFollower}/>
+        <Stack.Screen name="Spotlight" component={screens.Spotlight}/>
+        <Stack.Screen name="MyProfile" component={screens.MyProfile}/>
+        <Stack.Screen name="EditProfile" component={screens.EditProfile}/>
+        <Stack.Screen name="OthersProfile" component={screens.OthersProfile}/>
       </Stack.Navigator>
     </>
   );

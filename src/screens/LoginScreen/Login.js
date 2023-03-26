@@ -93,7 +93,8 @@ const Login = ({navigation}) => {
         <ButtonThemeComp
         style={styles.signBtn}
         text={'Login In'}
-        onPress={() => loginUserFun()}
+        // onPress={() => loginUserFun()}
+        onPress={() => {navigation.navigate('MybottomTabs')}}
       />
       <View style={styles.creatacc}>
           <Text style={{

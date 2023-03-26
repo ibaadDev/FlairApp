@@ -6,11 +6,12 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
   } from 'react-native-responsive-screen';
-const Post = () => {
+const Post = ({navigation}) => {
   return (
     <View style={styles.mainContainer}>
     <HeaderComponent
     back={true}
+    backpress={()=> navigation.goBack()}
     name={'Post'}/>
 
     <View >

@@ -11,7 +11,7 @@ import { ButtonThemeComp } from '../../components/ButtonThemeComp/ButtonThemeCom
 import { errorMessage } from '../../config/NotificationMessage'
 import { errorHandler } from '../../config/helperFunction'
 
-const ForgetScreen = ()=>{
+const ForgetScreen = ({navigation})=>{
     const [isloading, setIsloading] = useState(false);
     const [loginData, setLoginData] = useState({
       email: ''
@@ -41,7 +41,7 @@ const ForgetScreen = ()=>{
                 fontSize:hp('2'),
                 color:color.greyTextcolor
               }}>If you have an already account?</Text>
-              <TouchableOpacity onPress={()=>{navigation.navigate('SignUp')}}>
+              <TouchableOpacity onPress={()=>{navigation.navigate('Login')}}>
                 <Text style={styles.forgettext}>Login In</Text>
               </TouchableOpacity>
             </View>

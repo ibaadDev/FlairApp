@@ -5,7 +5,7 @@ import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import {launchImageLibrary} from 'react-native-image-picker';
 import { styles } from './styles';
 
-const CreatePost =()=>{
+const CreatePost =({navigation})=>{
     const ref = useRef(null);
     const [isBool, setBool] = useState(true);
     const handleClick = () => {
@@ -60,6 +60,7 @@ const CreatePost =()=>{
         <>
         <HeaderComponent 
         name={'Create'}
+        backpress={()=> navigation.goBack()}
         back={true}/>
         <View style={styles.upperContainer}>
             <TouchableOpacity>

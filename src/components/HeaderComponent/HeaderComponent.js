@@ -17,6 +17,7 @@ const HeaderComponent = (props) => {
             name="arrow-back"
             size={hp('3')}
             color="black"
+            onPress={props?.backpress}
           />
           :
           <View style={styles.logo}>

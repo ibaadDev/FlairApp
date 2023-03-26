@@ -10,18 +10,24 @@ import MyFollowing from './MyFollowingScreen/MyFollowing';
 import MyFollower from './MyFollowerScreens/MyFollower';
 import Spotlight from './SpotlightScreen/Spotlight';
 import ForgetScreen from './ForgetScreen/ForgetScreen';
+import MyProfile from './MyProfileScreen/MyProfile';
+import EditProfile from './EditProfileScreen/EditProfile';
+import OthersProfile from './OthersProfile/OthersProfile';
 
 export const screens = {
 Feed,
-Post,
+Post, 
 Comment,
-SignUp,
-Login,
+SignUp, 
+Login, 
 CreatePost,
-Followers,
-Tranding,
+Followers, 
+Tranding, 
 MyFollowing,
-MyFollower,
-Spotlight,
+MyFollower, 
+Spotlight, 
 ForgetScreen,
+MyProfile,
+EditProfile,
+OthersProfile,
 };

@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 function MybottomTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="feed"
+      initialRouteName="Feed"
       screenOptions={({route}) => ({
         tabBarActiveTintColor: color.black,
         tabBarInactiveTintColor: color.blueMenu,
@@ -53,7 +53,7 @@ function MybottomTabs() {
         },
       })}>
       <Tab.Screen
-        name="feed"
+        name="Feed"
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <AntDesign
@@ -74,7 +74,7 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={screens.Login}
+        component={screens.Feed}
       />
       <Tab.Screen
         name="Category"
@@ -144,7 +144,7 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={screens.MyFollower}
+        component={screens.Tranding}
       />
       <Tab.Screen
         name="Profile2"
@@ -167,7 +167,7 @@ function MybottomTabs() {
           //   // ...globalStyles.globalTextStyles3,
           // },
         }}
-        component={screens.CreatePost}
+        component={screens.MyProfile}
       />
 
       {/* <Tab.Screen

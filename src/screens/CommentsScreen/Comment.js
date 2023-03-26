@@ -5,13 +5,14 @@ import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
 import { CircleImageComp } from '../../components/CircleImageComp/CircleImageComp'
 import { color } from '../../config/color'
 
-const Comment = () => {
+const Comment = ({navigation}) => {
   const data = [{},{},{},{}]
   const inputElement = useRef();
   return (
     <View style={styles.mainContainer}>
         <HeaderComponent
         back={true}
+        backpress={()=> navigation.goBack()}
         name={'Commnets'}/>
         <View style={styles.upperView}>
           <CircleImageComp

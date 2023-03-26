@@ -8,13 +8,14 @@ import {
 import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import { color } from '../../config/color';
-const Tranding = () => {
+const Tranding = ({navigation}) => {
     const data =[{},{},{}]
 return(
     <View style={styles.mainContainer}>
       <HeaderComponent
       back={true}
       name={'Tranding'}
+      backpress={()=> navigation.goBack()}
       />
       <View style={styles.searchbar}>
         <Image

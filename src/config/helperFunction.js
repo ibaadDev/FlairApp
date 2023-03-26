@@ -108,7 +108,7 @@ export const ApiDelete = async url => {
 export const errorHandler = err => {
   let msg = 'Network Request Failed.';
   if (parseInt(err.response.status) === 422) {
-    msg = String(Object.values(err.response.data['errors'])[0][0]);
+    msg = String(Object.values(err.response.data['errors'])[0]);
   } else {
     msg = err.response.data.message;
   }

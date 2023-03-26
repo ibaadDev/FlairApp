@@ -10,6 +10,8 @@ import {
 import { ButtonThemeComp } from '../../components/ButtonThemeComp/ButtonThemeComp'
 import { SignUpUrl } from '../../config/Urls'
 import axios from 'react-native-axios';
+import { errorMessage, successMessage } from '../../config/NotificationMessage'
+import { errorHandler } from '../../config/helperFunction'
 
 const SignUp = () => {
     const handleClick = () => setShow(!show);
@@ -20,7 +22,7 @@ const SignUp = () => {
     Username:'',
     email: '',
     password: '',
-    confirmpassword
+    confirmpassword:''
   });
   const {
     Fullname,
@@ -29,6 +31,39 @@ const SignUp = () => {
     password,
     confirmpassword} = SignUpData;
     const updateState = data => setSignUpData(() => ({...SignUpData, ...data}));
+
+
+    const userSignupAction = () => {
+     
+       axios.post('https://flairapp.clickysoft.net/api/auth/signup', {
+        name: "",
+        user_name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        terms: "",
+        user_agreement: "",
+    }).then((res) => {
+          if(res.data.error) {
+            console.log(res.data.data)
+            
+          } else {
+              console.log(res.data.message)
+          }
+         
+      }).catch((err) => {
+        console.log(err.response.data)
+  
+      });
+
+  };
+
+
+
+
+
+
+
     const SignUpFun = () => {
       setIsloading(true);
       const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -43,35 +78,44 @@ const SignUp = () => {
         reg.test(email) === true&&
         confirmpassword.length >=8
       ) {
-        // let body = new FormData()
-        // body.append('name',Fullname)
-        // body.append('user_name',Username)
-        // body.append('email',email)
-        // body.append('password',password)
-        // body.append('password_confirmation',confirmpassword)
-        // body.append('terms','')
-        // body.append('user_agreement','')
-        let body ={
-          name:Fullname,
-          user_name:Username,
-          email:email,
-          password:password,
-          password_confirmation:confirmpassword,
-          terms:'',
-          user_agreement:0
-        }
-        axios
-          .post(SignUpUrl, body,
-            {
-              headers: {
-                'Content-Type': 'application/json'
-            },
-            }
-            )
+        // let body ={
+        //   name:Fullname,
+        //   user_name:Username,
+        //   email:email,
+        //   password:password,
+        //   password_confirmation:confirmpassword,
+        //   terms:1,
+        //   user_agreement:1
+        // }
+        let body = new FormData();
+        body.append("name",Fullname)
+        body.append("user_name",Username)
+        body.append("email",email)
+        body.append("password",password)
+        body.append("password_confirmation",confirmpassword)
+        body.append("terms",1)
+        body.append("user_agreement",1)
+        
+        console.log(body);
 
-          .then(function (res) {
+        axios.post('https://flairapp.clickysoft.net/api/auth/signup', {
+          name:Fullname,
+          user_name: Username,
+          email: email,
+          password: password,
+          password_confirmation: confirmpassword,
+          terms: 1,
+          user_agreement: 1,
+      })
+           .then(function (res) {
             setIsloading(false);
             console.log(res);
+            if(res.data.error) {
+              errorMessage(res.data.error)
+            }
+            else{
+              successMessage(res.data.message ? res.data.message : "",)
+            }
             // dispatch({
             //   type: types.LoginType,
             //   payload: res.data.data,
@@ -81,14 +125,15 @@ const SignUp = () => {
             //   payload: token,
             // });
           })
-          .catch(function (error) {
-            console.log("sadaslj",error)
+          .catch(function (err) {
+            console.log("sadaslj",err.response.data)
             setIsloading(false);
-            errorMessage(errorHandler(error));
+            z
+            errorMessage(errorHandler(err.response?err.response.data.errors:err.response.data.message));
           });
       } else {
         setIsloading(false);
-        errorMessage('Please type correct information');
+        errorMessage('Please fill all field correctly');
       }
     };
   return (

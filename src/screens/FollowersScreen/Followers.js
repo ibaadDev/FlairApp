@@ -7,7 +7,7 @@ import {
   } from 'react-native-responsive-screen';
 import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
-const Followers = () => {
+const Followers = ({navigation}) => {
   const data=[{isBool:true},{isBool:false},{isBool:false},{isBool:true},{isBool:true},{isBool:false}]
     // const [isBool, setBool] = useState(false);
   return (
@@ -15,6 +15,7 @@ const Followers = () => {
       <HeaderComponent
       back={true}
       name={'Followers'}
+      backpress={()=> navigation.goBack()}
       />
     <FlatList
     data={data}

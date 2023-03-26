@@ -10,7 +10,7 @@ import {
   } from 'react-native-responsive-screen';
 import CircleButton from '../../components/CircleButton'
 
-const Spotlight = () => {
+const Spotlight = ({navigation}) => {
     const data=[{},{},{}]
 
     return(
@@ -18,6 +18,7 @@ const Spotlight = () => {
             <HeaderComponent
             back={true}
             name={'Spotlight'}
+            backpress={()=> navigation.goBack()}
             />
              <FlatList
     data={data}

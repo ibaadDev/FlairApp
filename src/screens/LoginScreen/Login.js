@@ -8,7 +8,7 @@ import {
     heightPercentageToDP as hp,
   } from 'react-native-responsive-screen';
 import { ButtonThemeComp } from '../../components/ButtonThemeComp/ButtonThemeComp'
-import { errorMessage } from '../../config/NotificationMessage'
+import { errorMessage, successMessage } from '../../config/NotificationMessage'
 import { errorHandler } from '../../config/helperFunction'
 import axios from 'react-native-axios';
 import {useDispatch} from 'react-redux';
@@ -47,18 +47,15 @@ const Login = ({navigation}) => {
               errorMessage(res.data.error)
             }
             else{
-              console.log("ok =========>", res.data)
-              // successMessage(res.data.message ? res.data.message : "",)
+              // console.log(res.data)
+              successMessage("Login Succeffully")
+              navigation.navigate('MybottomTabs')
             }
-            // OneSignal.setExternalUserId(res.data.user.id.toString());
             dispatch({
               type: types.LoginType,
               payload: res.data,
             });
-            // dispatch({
-            //   type: types.LoginTypeToken,
-            //   payload: token,
-            // });
+
           })
           .catch(function (err) {
             console.log("asdasd =========>",err)

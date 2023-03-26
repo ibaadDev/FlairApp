@@ -9,9 +9,10 @@ export default function (state = initial_state, action) {
   switch (action.type) {
     case types.LoginType:
       const data = action.payload;
+      // console.log( "sakdjhsak"data);
       return {
         userData: data.user,
-        token: data.token,
+        token: data.access_token,
       };
       break;
     case types.LogoutType:

@@ -1,5 +1,5 @@
 import { View, Text, Image, FlatList, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import {
     widthPercentageToDP as wp,
@@ -8,8 +8,30 @@ import {
 import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import { color } from '../../config/color';
+import axios from 'react-native-axios';
+import {SkypeIndicator}from 'react-native-indicators';
+import {useSelector} from 'react-redux';
+
 const Tranding = ({navigation}) => {
-    const data =[{},{},{}]
+    const {userData, token} = useSelector(state =>state.userData);
+    const [TrandingData,setTrandingData] = useState([])
+    const [IsLoading,setIsLoading] = useState(false);
+    const [Page,setPage] =useState(1);
+    const FetchtrandingList =() =>{
+      setIsLoading(true)
+      axios.get('https://flairapp.clickysoft.net/api/authorized/trending/user'+('?page='+Page),
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then((res) => {
+        console.log( "sdkashd",res.data.data)
+        setTrandingData(res.data.data)
+        setIsLoading(false)
+        // setPage(Page + 1)
+      }).catch((err)=>{console.log("asdsa",err)})
+    }
+useEffect(()=>{
+  FetchtrandingList();
+},[])
 return(
     <View style={styles.mainContainer}>
       <HeaderComponent
@@ -30,7 +52,9 @@ return(
         />
       </View>
     <FlatList
-    data={data}
+    data={TrandingData}
+    onEndReachedThreshold={0.5}
+    // onEndReached={FetchtrandingList}
     contentContainerStyle={{marginBottom:hp('10')}}
     renderItem={({ item }) => {
       return(
@@ -42,11 +66,11 @@ return(
         source={require('../../images/image1.jpg')}
       />
       <View>
-        <Text style={styles.text1}>Robin Waugh</Text>
+        <Text style={styles.text1}>{item.name}</Text>
         <Text style={styles.text2}>robinmusician</Text>
         <View style={styles.text3Container}>
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text3}>
-            music always put me in goog mood when nobody see me
+            {item.bio}
           </Text>
         </View>
       </View>

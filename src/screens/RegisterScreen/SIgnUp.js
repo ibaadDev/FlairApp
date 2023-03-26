@@ -13,7 +13,7 @@ import axios from 'react-native-axios';
 import { errorMessage, successMessage } from '../../config/NotificationMessage'
 import { errorHandler } from '../../config/helperFunction'
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
     const handleClick = () => setShow(!show);
   const [show, setShow] = useState(false);
   const [isloading, setIsloading] = useState(false);
@@ -109,7 +109,7 @@ const SignUp = () => {
       })
            .then(function (res) {
             setIsloading(false);
-            console.log(res);
+            // console.log(res);
             if(res.data.error) {
               errorMessage(res.data.error)
             }
@@ -128,8 +128,7 @@ const SignUp = () => {
           .catch(function (err) {
             console.log("sadaslj",err.response.data)
             setIsloading(false);
-            z
-            errorMessage(errorHandler(err.response?err.response.data.errors:err.response.data.message));
+            errorMessage(errorHandler(err));
           });
       } else {
         setIsloading(false);
@@ -186,7 +185,7 @@ const SignUp = () => {
             fontSize:hp('2'),
             color:color.greyTextcolor
           }}>Don't have an account?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Login')}}>
             <Text style={styles.forgettext}>Login In</Text>
           </TouchableOpacity>
         </View>

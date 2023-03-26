@@ -8,7 +8,7 @@ export const errorMessage = description => {
     message: 'Warning',
     description: description,
     floating: true,
-    backgroundColor: colorTutor_.blue,
+    backgroundColor: 'red',
     style: {alignItems: 'center'},
   });
 };

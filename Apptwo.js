@@ -23,13 +23,12 @@ import {PersistGate} from 'redux-persist/integration/react';
 import OneSignal from 'react-native-onesignal';
 import FlashMessage from "react-native-flash-message";
 import { persistor,store } from './src/Redux/Reducer';
-import Apptwo from './Apptwo';
 
 
 
 //https://xd.adobe.com/view/adfdbf66-cce5-44aa-98ad-44df2f0019ae-f8ae/screen/b6fa581b-6a4a-4447-ad68-654223151399/
 
-function App(){
+function Apptwo(){
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -73,15 +72,16 @@ function App(){
 
   return (
     <>
-       <Provider store={store}>
-      <PersistGate persistor={persistor} loading={null}>
-        <Apptwo/>
-      </PersistGate>
-      <FlashMessage position="top" />
-    </Provider>
+    <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <NavigationContainer>
+        <StackNavigatior/>
+      </NavigationContainer>
     </>
   );
 }
 
 
-export default App;
+export default Apptwo;

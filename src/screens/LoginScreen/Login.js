@@ -10,6 +10,10 @@ import {
 import { ButtonThemeComp } from '../../components/ButtonThemeComp/ButtonThemeComp'
 import { errorMessage } from '../../config/NotificationMessage'
 import { errorHandler } from '../../config/helperFunction'
+import axios from 'react-native-axios';
+import {useDispatch} from 'react-redux';
+import { OneSignal } from 'react-native-onesignal'
+import types from '../../Redux/types'
 
 const Login = ({navigation}) => {
     const handleClick = () => setShow(!show);
@@ -21,7 +25,7 @@ const Login = ({navigation}) => {
   });
   const {email, password} = loginData;
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const updateState = data => setLoginData(() => ({...loginData, ...data}));
   const loginUserFun = () => {
     setIsloading(true);
@@ -29,34 +33,42 @@ const Login = ({navigation}) => {
     if (
       email != '' &&
       password != '' &&
-      reg.test(email) === true &&
       password.length >= 8
     ) {
-      let body = {
-        email: email,
-        password: password,
-      };
-      axios
-        .post(LoginUrl, body)
-        .then(function (res) {
-          setIsloading(false);
-          // dispatch({
-          //   type: types.LoginType,
-          //   payload: res.data.data,
-          // });
-          // dispatch({
-          //   type: types.LoginTypeToken,
-          //   payload: token,
-          // });
-        })
-        .catch(function (error) {
-          setIsloading(false);
-          errorMessage(errorHandler(error));
-        });
-    } else {
-      setIsloading(false);
-      errorMessage('Please type correct information');
-    }
+      axios.post('https://flairapp.clickysoft.net/api/auth/login', {
+          email: email,
+          password: password,
+      })
+           .then(function (res) {
+            setIsloading(false);
+            console.log(res)
+          
+            if(res.data.error) {
+              errorMessage(res.data.error)
+            }
+            else{
+              console.log("ok =========>", res.data)
+              // successMessage(res.data.message ? res.data.message : "",)
+            }
+            // OneSignal.setExternalUserId(res.data.user.id.toString());
+            dispatch({
+              type: types.LoginType,
+              payload: res.data,
+            });
+            // dispatch({
+            //   type: types.LoginTypeToken,
+            //   payload: token,
+            // });
+          })
+          .catch(function (err) {
+            console.log("asdasd =========>",err)
+            setIsloading(false);
+            errorMessage(errorHandler(err));
+          });
+      } else {
+        setIsloading(false);
+        errorMessage('Please fill all field correctly');
+      }
   };
 
   return (
@@ -93,8 +105,8 @@ const Login = ({navigation}) => {
         <ButtonThemeComp
         style={styles.signBtn}
         text={'Login In'}
-        // onPress={() => loginUserFun()}
-        onPress={() => {navigation.navigate('MybottomTabs')}}
+        onPress={() => loginUserFun()}
+        // onPress={() => {navigation.navigate('MybottomTabs')}}
       />
       <View style={styles.creatacc}>
           <Text style={{

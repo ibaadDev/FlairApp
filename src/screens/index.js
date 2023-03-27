@@ -13,6 +13,7 @@ import ForgetScreen from './ForgetScreen/ForgetScreen';
 import MyProfile from './MyProfileScreen/MyProfile';
 import EditProfile from './EditProfileScreen/EditProfile';
 import OthersProfile from './OthersProfile/OthersProfile';
+import Following from './FollowingScreen/Following';
 
 export const screens = {
 Feed,
@@ -22,6 +23,7 @@ SignUp,
 Login, 
 CreatePost,
 Followers, 
+Following,
 Tranding, 
 MyFollowing,
 MyFollower, 

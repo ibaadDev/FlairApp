@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, Image, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native'
 import React, { useRef } from 'react'
 import { styles } from './styles'
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
@@ -9,7 +9,7 @@ const Comment = ({navigation}) => {
   const data = [{},{},{},{}]
   const inputElement = useRef();
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
         <HeaderComponent
         back={true}
         backpress={()=> navigation.goBack()}
@@ -63,7 +63,7 @@ const Comment = ({navigation}) => {
          </View>
 
         </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

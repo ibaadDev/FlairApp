@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, Image, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native'
 import React, { useRef } from 'react'
 import { styles } from './styles'
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
@@ -14,11 +14,10 @@ const Spotlight = ({navigation}) => {
     const data=[{},{},{}]
 
     return(
-        <View style={styles.mainContainer}>
+        <SafeAreaView style={styles.mainContainer}>
             <HeaderComponent
-            back={true}
+            text={true}
             name={'Spotlight'}
-            backpress={()=> navigation.goBack()}
             />
              <FlatList
     data={data}
@@ -107,7 +106,7 @@ const Spotlight = ({navigation}) => {
       )}}
       />
         
-        </View>
+        </SafeAreaView>
     )
 }
 export default Spotlight

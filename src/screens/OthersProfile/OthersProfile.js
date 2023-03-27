@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React,{useState} from 'react'
 import { styles } from './styles'
 import { LoginInputComp } from '../../components/LoginInputComp/LoginInputComp'
@@ -12,13 +12,13 @@ import { errorMessage } from '../../config/NotificationMessage'
 import { errorHandler } from '../../config/helperFunction'
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
 
-const OthersProfile =()=>{
+const OthersProfile =({navigation})=>{
     const data = [{},{},{},{},{},{},{},{}]
 return(
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
     <HeaderComponent
     back={true}
-    name={'My Profile'}
+    name={'User Name'}
     backpress={()=> navigation.goBack()}
     />
     <View style={styles.upperrow}>
@@ -32,7 +32,7 @@ return(
       <Text style={{...styles.textContainer, color: 'grey'}}>109 Post</Text>
     </TouchableOpacity>
     <TouchableOpacity
-    //   onPress={onPress}
+      onPress={()=>{navigation.navigate('Followers')}}
       style={{
         backgroundColor: 'white',
         ...styles.followingcontainer,
@@ -41,7 +41,7 @@ return(
       <Text style={{...styles.textContainer, color: 'grey'}}>35.2k Followers</Text>
     </TouchableOpacity>
     <TouchableOpacity
-    //   onPress={onPress}
+    onPress={()=>{navigation.navigate('Following')}}
       style={{
         backgroundColor: 'white',
         ...styles.followingcontainer,
@@ -87,7 +87,7 @@ return(
         
        />
     </View>
-    </View>
+    </SafeAreaView>
 )
 }
 export default OthersProfile;

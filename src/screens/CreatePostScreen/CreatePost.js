@@ -1,16 +1,30 @@
 import React, { useRef, useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import {launchImageLibrary} from 'react-native-image-picker';
+import axios from 'react-native-axios';
+import {useSelector,useDispatch} from 'react-redux';
 import { styles } from './styles';
 
 const CreatePost =({navigation})=>{
+  const {userData, token} = useSelector(state =>state.userData);
     const ref = useRef(null);
+    const [postData, setpostData] = useState({
+      name:'',
+      uri:'',
+      type:''
+    });
     const [isBool, setBool] = useState(true);
     const handleClick = () => {
         ref.current.focus();
       };
+      const [posttextData, setposttextData] = useState({
+        Descp:''
+      });
+      const {Descp} = posttextData;
+      const updateState = data => setposttextData(() => ({...posttextData, ...data}));
+
       async function GetImgesPicker() {
         launchImageLibrary(
           {
@@ -22,9 +36,10 @@ const CreatePost =({navigation})=>{
           },
           res => {
             if (!res?.didCancel) {
-            //   let resCopy = res?.assets?.map((item, index) => {
-            //     return {...item, fileName: 'test' + index};
-            //   });
+              setpostData({
+                name:res?.assets.filename,
+                uri:res?.assets.uri,
+                 type:res?.assets.type})
               console.log(res, 'resCopy');
             //   dispatch(AddImage(resCopy));
     
@@ -42,9 +57,14 @@ const CreatePost =({navigation})=>{
                 skipBackup:true,
                 path:'images'
               }
+              
           },
           res => {
             if (!res?.didCancel) {
+              setpostData({
+                name:res.assets.filename,
+                uri:res.assets.uri,
+                 type:res.assets.type})
             //   let resCopy = res?.assets?.map((item, index) => {
             //     return {...item, fileName: 'test' + index};
             //   });
@@ -56,25 +76,45 @@ const CreatePost =({navigation})=>{
           },
         );
       }
+      const PostData =()=>{
+        const data_temp = new FormData()
+        if (postData.type !="") {
+          data_temp.append('type', postData.type.split("/")[0]);
+          data_temp.append('post_file', postData[0]);
+      } else {
+          data_temp.append('type', 'text');
+          data_temp.append('description', Descp);
+      }
+        axios.post('https://flairapp.clickysoft.net/api/authorized/posts', data_temp,
+        {
+            headers: { Authorization: `Bearer ${token}` ,
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          }
+          }).then((res)=>{
+            navigation.navigate('Feed')
+          }).catch((err)=>{
+            console.log(err)
+          })
+      } 
     return(
-        <>
+        <SafeAreaView style={styles.mainContainer}>
         <HeaderComponent 
         name={'Create'}
-        backpress={()=> navigation.goBack()}
-        back={true}/>
+        text={true}/>
         <View style={styles.upperContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity  onPress={()=> navigation.goBack()}>
                 <Image 
                 source={require('../../images/Group103.png')}
                 style={styles.crossimage}
                 />
             </TouchableOpacity>
             
-                <CircleButton
+          <CircleButton
           isBool={isBool}
           texColor={isBool ? 'white' : 'white'}
           bg={isBool ? '#561CE0' : '#561CE0'}
-          onPress={() => setBool(prev => !prev)}
+          onPress={() => {setBool(prev => !prev),PostData()}}
           text={isBool ? 'Post' : 'Post'}
         />
         </View>
@@ -82,7 +122,8 @@ const CreatePost =({navigation})=>{
         ref={ref}
         placeholder={`${'An interesting '}\n${'description...'}`}
         style={styles.textinput}
-        value=''
+        value={Descp}
+        onChangeText={(e)=>updateState({Descp: e})}
         />  
         <View style={styles.bottomView}>
            <TouchableOpacity style={styles.touchContent} onPress={()=>{GetImgesPicker()}}>
@@ -102,7 +143,7 @@ const CreatePost =({navigation})=>{
            </TouchableOpacity>
            
         </View>
-        </>
+        </SafeAreaView>
     )
 
 }

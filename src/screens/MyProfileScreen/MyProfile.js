@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React,{useEffect, useRef, useState} from 'react'
 import { styles } from './styles'
 import { LoginInputComp } from '../../components/LoginInputComp/LoginInputComp'
@@ -21,7 +21,6 @@ const MyProfile = ({navigation}) => {
     const [IsLoading,setIsLoading] = useState(false);
     const [Page,setPage] =useState(1);
    const post = useRef(new Array());
-    const data = [{},{},{},{},{},{},{},{}]
     const dispatch = useDispatch();
     const Logout = () =>{
         axios.post('https://flairapp.clickysoft.net/api/authorized/logout', userData,
@@ -51,6 +50,16 @@ const MyProfile = ({navigation}) => {
           });
     }
 
+     const GetUserinfo = ()=>{
+      axios.get('https://flairapp.clickysoft.net/api/authorized/user',{
+        headers: { Authorization: `Bearer ${token}` }
+      }).then((res)=>{
+        dispatch({
+          type: types.UpdateProfile,
+          payload: res.data
+        });
+      })
+     }
 
     const MyPostList = () =>{
         setIsLoading(true)
@@ -63,7 +72,7 @@ const MyProfile = ({navigation}) => {
           headers: { Authorization: `Bearer ${token}` }
         }).then((res) => {
             setMyPost(res.data.data);
-        //   console.log( "sdkashd",MyPost[0])
+          console.log( "sdkashd",res.data.data[0])
           post.current = res.data.data[0]
           setIsLoading(false)
         //   setPage(Page + 1)
@@ -73,15 +82,14 @@ const MyProfile = ({navigation}) => {
         })
     }
     useEffect(()=>{
+      GetUserinfo();
         MyPostList();
-        console.log(userData)
       },[])
 return(
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
     <HeaderComponent
-    back={true}
-    name={'My Profile'}
-    backpress={()=> navigation.goBack()}
+    text={true}
+   name={'My Profile'}
     />
     <View style={styles.upperrow}>
     <TouchableOpacity
@@ -94,7 +102,7 @@ return(
       <Text style={{...styles.textContainer, color: 'grey'}}>{`${userData.post_count} Post`}</Text>
     </TouchableOpacity>
     <TouchableOpacity
-    //   onPress={onPress}
+    onPress={()=>navigation.navigate('MyFollower')}
       style={{
         backgroundColor: 'white',
         ...styles.followingcontainer,
@@ -103,7 +111,7 @@ return(
       <Text style={{...styles.textContainer, color: 'grey'}}>{`${userData.followers_count} Follower`}</Text>
     </TouchableOpacity>
     <TouchableOpacity
-    //   onPress={onPress}
+      onPress={()=>navigation.navigate('MyFollowing')}
       style={{
         backgroundColor: 'white',
         ...styles.followingcontainer,
@@ -148,17 +156,18 @@ return(
      scrollEnabled={true}
      renderItem={({ item }) => {
        return(
-        <View style={{height:hp('14'),marginTop:hp('4'),marginHorizontal:wp('3')}}>
+        <TouchableOpacity style={{height:hp('14'),marginTop:hp('4'),marginHorizontal:wp('3')}} 
+        onPress={()=>{navigation.navigate('Post',{item})}}>
         <Image
-        source={item.thumbnail_url==null?require('../../images/default_avatar.png'):{uri:item.thumbnail_url}}
+        source={item.file_url==null?require('../../images/default_avatar.png'):{uri:item.file_url}}
         style={{height:hp('14'),width:wp('27'),borderRadius:20}}
         />
-         </View>
+         </TouchableOpacity>
         )}}
         
        />
     </View>
-    </View>
+    </SafeAreaView>
 )
 }
 export default MyProfile;

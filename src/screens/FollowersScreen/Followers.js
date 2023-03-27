@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
 import {
@@ -11,7 +11,7 @@ const Followers = ({navigation}) => {
   const data=[{isBool:true},{isBool:false},{isBool:false},{isBool:true},{isBool:true},{isBool:false}]
     // const [isBool, setBool] = useState(false);
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
       <HeaderComponent
       back={true}
       name={'Followers'}
@@ -72,7 +72,7 @@ const Followers = ({navigation}) => {
       )
     }}
     />
-    </View>
+    </SafeAreaView>
   )
 }
 

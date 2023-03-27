@@ -6,6 +6,12 @@ import {
   } from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
+    mainContainer:{
+        height:hp('100'),
+        width:wp('100'),
+        backgroundColor:'white',
+        paddingBottom:hp('8')
+      },
     upperContainer:{
         backgroundColor:color.createcrossbackground,
         height:hp('4'),

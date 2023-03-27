@@ -1,8 +1,8 @@
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Modal, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React,{useRef, useState} from 'react'
 import { styles } from './styles'
 import { LoginInputComp } from '../../components/LoginInputComp/LoginInputComp'
-import { color } from '../../config/color'
+import { color, colorTutor_ } from '../../config/color'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -10,11 +10,20 @@ import {
   import {launchImageLibrary} from 'react-native-image-picker';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
 import CircleButton from '../../components/CircleButton'
+import axios from 'react-native-axios';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useSelector,useDispatch} from 'react-redux';
+import { errorMessage, successMessage } from '../../config/NotificationMessage'
+import { errorHandler } from '../../config/helperFunction'
 
 const EditProfile = ({navigation}) => {
+    const {userData, token} = useSelector(state =>state.userData);
+    const [show,setShow] =useState(false)
+    const [showconfpass,setshowconfpass] =useState(false)
+    const [showNewpass,setshowNewpass] =useState(false)
+    const [isModalvisible,setisModalvisible] =useState(false)
     const ref1 = useRef(null);
     const ref2 = useRef(null);
-    const ref3 = useRef(null);
     const ref4 = useRef(null);
     const [isBool, setBool] = useState(true);
     const handleClick1 = () => {
@@ -24,25 +33,33 @@ const EditProfile = ({navigation}) => {
         ref2.current.focus();
       };
     const handleClick3 = () => {
-        ref3.current.focus();
+        setisModalvisible(!isModalvisible)
       };
     const handleClick4 = () => {
         ref4.current.focus();
       };
+      let name ;
+      let uri ;
+      let type ;
 
       const [EditData, setEditData] = useState({
-        Fullname:'',
-        Username:'',
-        changepassword: '',
-        Bio: '',
+        Fullname:userData.name,
+        Username:userData.user_name,
+        Bio: userData.bio,
+        old_password:'',
+       New_password:'',
+        password_confirmation:''
       });
       const {
         Fullname,
         Username,
-        changepassword,
-        Bio} = EditData;
+        Bio,
+        old_password,
+        New_password,
+        password_confirmation
+        } = EditData;
         const updateState = data => setEditData(() => ({...EditData, ...data}));
-    async function GetImgesPicker() {
+        async function GetImgesPicker() {
         launchImageLibrary(
           {
             selectionLimit: 0,
@@ -53,27 +70,167 @@ const EditProfile = ({navigation}) => {
           },
           res => {
             if (!res?.didCancel) {
-            //   let resCopy = res?.assets?.map((item, index) => {
-            //     return {...item, fileName: 'test' + index};
-            //   });
+                name = res.assets.fileName,
+                uri = res.assets.uri,
+                type = res.assets.type
               console.log(res, 'resCopy');
             //   dispatch(AddImage(resCopy));
-    
-              // updateImage(res?.assets);
+            // updateImage(res?.assets);
             }
           },
         );
       }
+      const handleconfpass= ()=>{
+        setshowconfpass(!showconfpass)
+      }
+      const handleNewpass= ()=>{
+        setshowNewpass(!showNewpass)
+      }
+      const handleoldpass= ()=>{
+        setShow(!show)
+      }
+      
 
+      const UpdateProfile =() =>{
+        const data_temp = new FormData();
+        data_temp.append("name", Fullname);
+        data_temp.append("user_name", Username);
+        data_temp.append("email", userData.email);
+        data_temp.append("profile_image", ('file',{name:name,uri:uri, type:type}));
+        data_temp.append("bio", Bio);
+        data_temp.append("password", New_password);
+        data_temp.append( "password_confirmation",password_confirmation);
+        data_temp.append("old_password", old_password);
+        data_temp.append(
+            "profile_image_remove",1
+        );
+        axios.post('https://flairapp.clickysoft.net/api/authorized/user',data_temp,{
+            header:{
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then((res)=>{    
+            successMessage(res.data.message)
+        }
+            
+        ).catch((err)=>{
+            errorMessage(errorHandler(err))
+            console.log(err)
+
+        })
+
+      }
     return(
-        <View style={styles.mainContainer}>
+        <SafeAreaView style={styles.mainContainer}>
+            <Modal
+          transparent={true}
+          animationType="fade"
+          visible={isModalvisible}
+        >
+            <View style={{ 
+             width:wp('100'),
+             height:hp('100'),
+             justifyContent: "center",
+             alignItems: "center",
+             backgroundColor: "rgba(0,0,0,0.5)",}}> 
+            <View style={{
+                width:wp('80'),
+                backgroundColor:'white',
+                borderRadius:10,
+                padding:10     
+
+            }}>
+                 
+            <TouchableOpacity style={{alignSelf:'flex-start',marginVertical:hp('2')}}
+            onPress={()=>{setisModalvisible(!isModalvisible),console.log(password_confirmation)}}
+            >
+                <Image source={require('../../images/Group103.png')}/>
+            </TouchableOpacity>
+            <Text style={{color:color.greyTextcolor, fontSize:hp('2')}}>Old Password</Text>
+            <View style ={{flexDirection:'row',alignItems:'center'}}>
+            <TextInput
+            secureTextEntry={show?false:true}
+            placeholder='*******'
+            placeholderTextColor={color.black}    
+            value={old_password}
+            onChangeText={e => updateState({old_password: e})}
+            />
+            <Ionicons
+          onPress={()=>{handleoldpass()}}
+          name={show ? 'eye-outline' : 'eye-off-outline'}
+        // name={'eye-off-outline'}
+          color={ colorTutor_.ipalforgetTxtColor
+          }
+          style={{
+            marginLeft: 'auto',
+            marginRight: wp('3'),
+            paddingLeft: wp('2'),
+          }}
+          size={hp('3')}
+        />
+        </View> 
+            <Text style={{color:color.greyTextcolor, fontSize:hp('2')}}>New Password</Text>
+            <View style ={{flexDirection:'row',alignItems:'center'}}>
+            <TextInput
+            secureTextEntry={showNewpass?false:true}
+            placeholder='*******'
+            placeholderTextColor={color.black}    
+            value={New_password}
+            onChangeText={e => updateState({New_password: e})}
+            />
+            <Ionicons
+          onPress={()=>{handleNewpass()}}
+          name={showNewpass ? 'eye-outline' : 'eye-off-outline'}
+          color={ colorTutor_.ipalforgetTxtColor
+          }
+          style={{
+            marginLeft: 'auto',
+            marginRight: wp('3'),
+            paddingLeft: wp('2'),
+          }}
+          size={hp('3')}
+        />
+        </View> 
+            <Text style={{color:color.greyTextcolor, fontSize:hp('2')}}>Confirm Password</Text>
+            <View style ={{flexDirection:'row',alignItems:'center'}}>
+            <TextInput
+            secureTextEntry={showconfpass?false:true}
+            placeholder='*******'
+            placeholderTextColor={color.black}    
+            value={password_confirmation}
+            onChangeText={e => updateState({password_confirmation: e})}
+            />
+            <Ionicons
+          onPress={()=>{handleconfpass()}}
+          name={showconfpass ? 'eye-outline' : 'eye-off-outline'}
+          color={ colorTutor_.ipalforgetTxtColor
+          }
+          style={{
+            marginLeft: 'auto',
+            marginRight: wp('3'),
+            paddingLeft: wp('2'),
+          }}
+          size={hp('3')}
+        />
+        </View> 
+        <TouchableOpacity style={styles.savebtn}
+        onPress={()=>{setisModalvisible(!isModalvisible)}}
+        >
+            <Text style={{color:'white'}}>Save</Text>
+        </TouchableOpacity>
+            </View>
+            </View>
+
+        </Modal>
         <HeaderComponent
         back={true}
         name={'Profile Setting'}
         backpress={()=> navigation.goBack()}
         />
         <View style={styles.upperContainer}>
-            <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}}>
+            <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}}
+           >
                 <Image 
                 source={require('../../images/Group103.png')}
                 style={styles.crossimage}
@@ -85,7 +242,7 @@ const EditProfile = ({navigation}) => {
           isBool={isBool}
           texColor={'white'}
           bg={'#561CE0'}
-          onPress={() => setBool(prev => !prev)}
+          onPress={() => {setBool(prev => !prev), UpdateProfile()}}
           text={ 'save'}
         />
         </View>
@@ -139,16 +296,11 @@ const EditProfile = ({navigation}) => {
     <Text>Change Password</Text>
     <View
     style={styles.textinputstyle}>
-    <TextInput
-    ref={ref3}
-    placeholder='Change Password'
-    placeholderTextColor={color.greyTextcolor}
-    value={changepassword}
-    onChangeText={e => updateState({changepassword: e})}
-    style={{width:wp('80'),color:color.black}}
-    />
+    <Text style={{width:wp('60'),color:color.black}}>
+     ********
+    </Text>
     <TouchableOpacity onPress={()=>{handleClick3()}}>
-    <Text style={{color:color.primaryColor}}>Edit</Text>
+    <Text style={{color:color.primaryColor}}>Change Password</Text>
     </TouchableOpacity>
     </View>
     </View>
@@ -169,7 +321,7 @@ const EditProfile = ({navigation}) => {
     </TouchableOpacity>
     </View>
     </View>
-        </View>
+        </SafeAreaView>
     )
 }
 export default EditProfile;

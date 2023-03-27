@@ -49,4 +49,14 @@ import {
         height:hp('2'),
         width:wp('4')
     },
+    savebtn:{
+        backgroundColor:color.primaryColor,
+        width:wp('20'),
+        height:hp('5'),
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:10,
+        alignSelf:'flex-end',
+        margin:10
+    }
   })

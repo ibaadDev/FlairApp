@@ -1,5 +1,5 @@
-import { View, Text, Image, FlatList, TextInput } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, Image, FlatList, TextInput, SafeAreaView, TouchableOpacity } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import {
     widthPercentageToDP as wp,
@@ -10,34 +10,61 @@ import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import { color } from '../../config/color';
 import axios from 'react-native-axios';
 import {SkypeIndicator}from 'react-native-indicators';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
+import types from '../../Redux/types';
 
 const Tranding = ({navigation}) => {
+  const dispatch = useDispatch()
     const {userData, token} = useSelector(state =>state.userData);
-    const [TrandingData,setTrandingData] = useState([])
+    // const [TrandingData,setTrandingData] = useState([])
+   const TrandingData=useRef(new Array())
+    const [LastPage,setLastPage] =useState(0)
     const [IsLoading,setIsLoading] = useState(false);
     const [Page,setPage] =useState(1);
+
+
     const FetchtrandingList =() =>{
-      setIsLoading(true)
+      setIsLoading(true);
       axios.get('https://flairapp.clickysoft.net/api/authorized/trending/user'+('?page='+Page),
       {
         headers: { Authorization: `Bearer ${token}` }
       }).then((res) => {
-        console.log( "sdkashd",res.data.data)
-        setTrandingData(res.data.data)
+        // setPage(Page + 1); 
+        
+        // console.log("agaya bsdka =================>",TrandingData.current)
+        if(Page === 1){
+          TrandingData.current = res.data.data
+        }else{
+          console.log(Page)
+          TrandingData.current.push(res.data.data)
+          
+        console.log( "sdkashd =============>",TrandingData)
+        }
+       
+        // setTrandingData([TrandingData, ...res.data.data])
+        // setLastPage(res.data.meta.Lastpage)
+        if(res.data.meta.Lastpage>Page) setPage(Page + 1) 
         setIsLoading(false)
-        // setPage(Page + 1)
-      }).catch((err)=>{console.log("asdsa",err)})
+        
+        // dispatch({
+        //   type: types.Tranding,
+        //   payload: JSON.stringify(res.data),
+        // });
+
+      }).catch((err)=>{
+        console.log("asdsa",err)
+      })
+      
     }
 useEffect(()=>{
   FetchtrandingList();
-},[])
+},[]);
+
 return(
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
       <HeaderComponent
-      back={true}
       name={'Tranding'}
-      backpress={()=> navigation.goBack()}
+      text={true}
       />
       <View style={styles.searchbar}>
         <Image
@@ -52,13 +79,15 @@ return(
         />
       </View>
     <FlatList
-    data={TrandingData}
-    onEndReachedThreshold={0.5}
-    // onEndReached={FetchtrandingList}
+    data={TrandingData.current}
+    onEndReachedThreshold={0.1}
+    onEndReached={FetchtrandingList}
     contentContainerStyle={{marginBottom:hp('10')}}
     renderItem={({ item }) => {
       return(
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container}
+        onPress={()=>navigation.navigate('OthersProfile')}
+        >
     <View style={styles.innerContainer}>
       <Image
         style={styles.image}
@@ -104,11 +133,11 @@ return(
       />
       <Text style={styles.bottomText}>109 Following</Text>
     </View>
-    </View>
+    </TouchableOpacity>
       )
     }}
     />
-    </View>
+    </SafeAreaView>
 )
 }
 export default Tranding

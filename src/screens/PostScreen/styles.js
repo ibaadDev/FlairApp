@@ -15,6 +15,10 @@ export const styles = StyleSheet.create({
         width:wp('100'),
         height:hp('50')
      },
+     Textstyle:{
+        width:wp('100'),
+        height:hp('50')
+     },
      commintsView:{
         flexDirection:'row',
         marginVertical:hp('2')

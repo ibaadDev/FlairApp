@@ -9,13 +9,15 @@ import {
     mainContainer:{
       height:hp('100'),
       width:wp('100'),
-      backgroundColor:'white'
+      backgroundColor:'white',
+      paddingBottom:hp('8')
     },
     container: {
         padding: 10,
         margin:3,
         borderRadius:10,
         backgroundColor: '#F9F9F9',
+        
       },
       innerContainer: {
         width: wp('90'),

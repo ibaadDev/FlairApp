@@ -9,7 +9,6 @@ export default function (state = initial_state, action) {
   switch (action.type) {
     case types.LoginType:
       const data = action.payload;
-      // console.log( "sakdjhsak"data);
       return {
         userData: data.user,
         token: data.access_token,
@@ -23,10 +22,16 @@ export default function (state = initial_state, action) {
       break;
     case types.UpdateProfile:
       const updatedData = action.payload;
-      return {...state, userData: updatedData.user};
+      return {...state, userData: updatedData.data};
       break;
+      // case types.Tranding:
+      //   const trandingdata = action.payload;
+      //   console.log(trandingdata)
+      //   return{...state , Trandingdata:trandingdata.data}
+        
     default:
       return {...state};
       break;
+      
   }
 }

@@ -11,4 +11,5 @@ export default {
   UpdateProfile: 'UpdateProfile',
   SaveToken: 'SaveToken',
   LoginTypeToken: 'LoginTypeToken',
+  Tranding :'Tranding'
 };

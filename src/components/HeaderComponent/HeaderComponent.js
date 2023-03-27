@@ -9,7 +9,11 @@ import { styles } from './styles';
 
 const HeaderComponent = (props) => {
   return (
-    <View style={{flexDirection:'row',marginVertical:hp('2'),marginHorizontal:wp('1.5'),justifyContent:'space-between'}}>
+    <View style={{
+      flexDirection:'row',
+      marginVertical:hp('2'),
+      marginHorizontal:wp('1.5'),
+      justifyContent:'space-between'}}>
       {props.back?
         <Ionicons
             // onPress={() => props.navigation.goBack()}

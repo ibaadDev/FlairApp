@@ -1,4 +1,7 @@
 import {store} from '../Redux/Reducer';
+import axios from 'react-native-axios';
+import {useSelector} from 'react-redux';
+import { successMessage } from './NotificationMessage';
 
 let statusCode = 'ghjkl';
 export const ApiPost = async (url, body, headerType, BearerToken) => {
@@ -114,3 +117,28 @@ export const errorHandler = err => {
   }
   return msg;
 };
+export const Following = async (body,token)=>{
+  let data= {
+    following_user_id:body
+  } 
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+await axios.post('https://flairapp.clickysoft.net/api/authorized/follow',data,config).then((res)=>{
+  successMessage(res.data.message)
+}).catch((err)=>{
+  console.log(err.response.data)
+})
+}
+export const removeFollowing = async (body,token)=>{
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+console.log('https://flairapp.clickysoft.net/api/authorized/follow/delete/'+body)
+await axios.post('https://flairapp.clickysoft.net/api/authorized/follow/delete/'+body,"",config).then((res)=>{
+  // console.log(res)
+  successMessage(res.data.message)
+}).catch((err)=>{
+  console.log(err)
+})
+}

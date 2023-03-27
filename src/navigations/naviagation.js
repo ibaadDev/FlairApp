@@ -9,7 +9,6 @@ export default function StackNavigatior() {
   const {userData, token} = useSelector(state => state.userData);
   return (
     <>
-    {console.log(token)}
       <Stack.Navigator
         screenOptions={{
           animation: 'slide_from_left',
@@ -24,6 +23,7 @@ export default function StackNavigatior() {
           <Stack.Screen name="Comment" component={screens.Comment}/>
           <Stack.Screen name="CreatePost" component={screens.CreatePost}/>
           <Stack.Screen name="Followers" component={screens.Followers}/>
+          <Stack.Screen name="Following" component={screens.Following}/>
           <Stack.Screen name="Tranding" component={screens.Tranding}/>
           <Stack.Screen name="MyFollowing" component={screens.MyFollowing}/>
           <Stack.Screen name="MyFollower" component={screens.MyFollower}/>

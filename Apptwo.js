@@ -58,7 +58,7 @@ function Apptwo(){
   //   OneSignal.setNotificationOpenedHandler(notification => {
   //     console.log("OneSignal: notification opened:", notification);
   //   });
-  // },[])
+  },[])
 
   return (
     <>

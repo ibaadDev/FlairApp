@@ -17,7 +17,6 @@ const Post = ({route,navigation}) => {
     back={true}
     backpress={()=> navigation.goBack()}
     name={'Post'}/>
-   { console.log("sadaskjdhkjs",item.type)}
     <View >
       {item.type=="image"?
          <Image

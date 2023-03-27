@@ -67,7 +67,8 @@ import {
         color:color.black
     },
     editprofilerow:{
-        flexDirection:'row'
+        flexDirection:'row',
+        marginTop:hp('2')
     },
     editprofileconatiner:{
         borderWidth: 1.5,

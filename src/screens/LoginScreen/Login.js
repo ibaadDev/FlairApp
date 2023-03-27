@@ -47,6 +47,7 @@ const Login = ({navigation}) => {
               errorMessage(res.data.error)
             }
             else{
+              OneSignal.setExternalUserId(res.data.user.id.toString());
               // console.log(res.data)
               successMessage("Login Succeffully")
               navigation.navigate('MybottomTabs')

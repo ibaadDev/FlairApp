@@ -12,53 +12,94 @@ import axios from 'react-native-axios';
 import {SkypeIndicator}from 'react-native-indicators';
 import {useSelector,useDispatch} from 'react-redux';
 import types from '../../Redux/types';
+import { errorMessage, successMessage } from '../../config/NotificationMessage';
+import { Following, removeFollowing } from '../../config/helperFunction';
 
 const Tranding = ({navigation}) => {
   const dispatch = useDispatch()
     const {userData, token} = useSelector(state =>state.userData);
-    // const [TrandingData,setTrandingData] = useState([])
-   const TrandingData=useRef(new Array())
+    const [TrandingData,setTrandingData] = useState([])
+  //  const TrandingData=useRef(new Array())
     const [LastPage,setLastPage] =useState(0)
     const [IsLoading,setIsLoading] = useState(false);
-    const [Page,setPage] =useState(1);
+    const [page, setpage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [search, setSearch] = useState('');
+    const [categoryFilterData, setCategoryFilterData] = useState('');
 
 
     const FetchtrandingList =() =>{
-      setIsLoading(true);
-      axios.get('https://flairapp.clickysoft.net/api/authorized/trending/user'+('?page='+Page),
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }).then((res) => {
-        // setPage(Page + 1); 
-        
-        // console.log("agaya bsdka =================>",TrandingData.current)
-        if(Page === 1){
-          TrandingData.current = res.data.data
-        }else{
-          console.log(Page)
-          TrandingData.current.push(res.data.data)
-          
-        console.log( "sdkashd =============>",TrandingData)
-        }
-       
-        // setTrandingData([TrandingData, ...res.data.data])
-        // setLastPage(res.data.meta.Lastpage)
-        if(res.data.meta.Lastpage>Page) setPage(Page + 1) 
-        setIsLoading(false)
-        
-        // dispatch({
-        //   type: types.Tranding,
-        //   payload: JSON.stringify(res.data),
-        // });
-
-      }).catch((err)=>{
-        console.log("asdsa",err)
-      })
+      
+      if(hasMore){
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        };
+        setIsLoading(true)
+        axios.get("https://flairapp.clickysoft.net/api/authorized/trending/user" + (TrandingData.length ? "?page=" + page : ""),
+            config
+        ).then((res) => {
+            if (res.data.error) {
+              errorMessage(res.data.error);
+            } else {
+              if (!res.data.meta || page >= res.data.meta.last_page){
+                setHasMore(false);
+              }
+              if (res.data.data) {
+                setIsLoading(false)
+                console.log(res.data.data[0])
+                if(TrandingData.length){
+                  let newDataSet = [...TrandingData, ...res.data.data];
+                  setTrandingData(newDataSet)
+                }else{
+                  setIsLoading(false)
+                  setTrandingData(res.data.data)
+                }
+                setpage(page+1);
+              }
+            }
+            
+        }).catch((err) => {
+          console.log(err)
+          errorMessage('Something went wrong');
+        });
+      }else{
+        successMessage("No more data found.");
+      }
       
     }
+    const Follower = (item)=>{
+        Following(item.id,token)
+        FetchtrandingList();
+      }
+      const RemoveFollower=(item)=>{
+        removeFollowing(item.id,token)
+        FetchtrandingList()
+      }
+      function searchFun(e) {
+        var text = e;
+        if (text) {
+          // Inserted text is not blank
+          // Filter the masterDataSource and update FilteredDataSource
+          const newData = TrandingData.filter(function (item) {
+            // Applying filter for the inserted text in search bar
+            const itemData = item.name
+              ? item.name.toUpperCase()
+              : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+          });
+          setCategoryFilterData(newData);
+          setSearch(text);
+        } else {
+          setCategoryFilterData(TrandingData);
+          setSearch(text);
+        }
+      }
 useEffect(()=>{
-  FetchtrandingList();
-},[]);
+  navigation.addListener('focus', () => {
+    FetchtrandingList();
+  });
+  },[navigation]);
 
 return(
     <SafeAreaView style={styles.mainContainer}>
@@ -73,30 +114,35 @@ return(
         <TextInput
         placeholder='Search'
         placeholderTextColor={color.placeholdercolor}
-        // value=''
-        // onChangeText={}
+        onChangeText={e => searchFun(e)}
+        value={search}
         style={styles.placeholderstyle}
         />
       </View>
+      {IsLoading?
+      <SkypeIndicator color={color.black}
+      style={{paddingBottom:hp(8)}}
+      />:
+      <>
     <FlatList
-    data={TrandingData.current}
+    data={categoryFilterData || TrandingData}
     onEndReachedThreshold={0.1}
     onEndReached={FetchtrandingList}
-    contentContainerStyle={{marginBottom:hp('10')}}
+    contentContainerStyle={{paddingBottom:hp('1')}}
     renderItem={({ item }) => {
       return(
         <TouchableOpacity style={styles.container}
-        onPress={()=>navigation.navigate('OthersProfile')}
+        onPress={()=>navigation.navigate('OthersProfile',{item})}
         >
     <View style={styles.innerContainer}>
       <Image
         style={styles.image}
         resizeMode="contain"
-        source={require('../../images/image1.jpg')}
+        source={item.profile_image == null ?require('../../images/default_avatar.png'):{uri:item.profile_image}}
       />
       <View>
-        <Text style={styles.text1}>{item.name}</Text>
-        <Text style={styles.text2}>robinmusician</Text>
+        <Text style={styles.text1}>{item.user_name}</Text>
+        <Text style={styles.text2}>{item.name}</Text>
         <View style={styles.text3Container}>
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.text3}>
             {item.bio}
@@ -109,12 +155,12 @@ return(
           alignItems: 'center',
           marginBottom: hp('2'),
         }}>
-        <CircleButton
-          isBool={true}
-          texColor={ 'white'}
-          bg={ '#561CE0'}
-          // onPress={() => setBool(prev => !prev)}
-          text={ 'Follow'}
+           <CircleButton
+          isBool={item.is_following_by_me == 0?true:false}
+          texColor={item.is_following_by_me == 0 ? 'white' : 'grey'}
+          bg={item.is_following_by_me == 0 ? color.primaryColor : 'white'}
+          onPress={() => {item.is_following_by_me == 0? Follower(item):RemoveFollower(item)}}
+          text={item.is_following_by_me == 0 ?'Follow' : 'Unfollow'}
         />
       </View>
     </View>
@@ -137,6 +183,9 @@ return(
       )
     }}
     />
+    </>
+    
+  }
     </SafeAreaView>
 )
 }

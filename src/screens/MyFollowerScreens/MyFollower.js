@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList, SafeAreaView } from 'react-native'
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import {
@@ -11,6 +11,7 @@ import CircleButton from '../../components/CircleButton';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import { color } from '../../config/color';
 import { Following, removeFollowing } from '../../config/helperFunction';
+import {SkypeIndicator}from 'react-native-indicators';
 const MyFollower = ({navigation}) => {
   const data=[{isBool:true},{isBool:false},{isBool:false},{isBool:true},{isBool:true},{isBool:false}]
     // const [isBool, setBool] = useState(false);
@@ -44,18 +45,25 @@ const MyFollower = ({navigation}) => {
       name={'Followers'}
       backpress={()=> navigation.goBack()}
       />
+      {FollowData.length>0?
     <FlatList
     data={FollowData}
     contentContainerStyle={{marginBottom:hp('10')}}
     renderItem={({ item }) => {
       return(
       <View style={styles.container}>
-    <View style={styles.innerContainer}>
+    <View style={styles.innerContainer}
+    >
+      <TouchableOpacity
+      onPress={()=>{navigation.navigate('OthersProfile',{item})}}>
+
       <Image
         style={styles.image}
         resizeMode="contain"
         source={item.user.profile_image == null ?require('../../images/default_avatar.png'):{uri:item.user.profile_image}}
       />
+
+      </TouchableOpacity>
       <View>
         <Text style={styles.text1}>{item.user.name}</Text>
         <Text style={styles.text2}>{item.user.user_name}</Text>
@@ -99,6 +107,9 @@ const MyFollower = ({navigation}) => {
       )
     }}
     />
+    :
+    <SkypeIndicator color={color.black}/>
+  }
     </SafeAreaView>
   )
 }

@@ -23,7 +23,8 @@ export const styles = StyleSheet.create({
   },
   imagestyle:{
     width:wp('100'),
-    height:hp('40')
+    height:hp('40'),
+    justifyContent:'center'
  },
  commintsView:{
     flexDirection:'row',

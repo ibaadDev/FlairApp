@@ -17,7 +17,8 @@ export const styles = StyleSheet.create({
      },
      Textstyle:{
         width:wp('100'),
-        height:hp('50')
+        height:hp('50'),
+        justifyContent:'center'
      },
      commintsView:{
         flexDirection:'row',

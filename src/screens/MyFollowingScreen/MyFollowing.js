@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList, SafeAreaView } from 'react-native'
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import {
@@ -10,6 +10,8 @@ import axios from 'react-native-axios';
 import {useSelector,useDispatch} from 'react-redux';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import { Following, removeFollowing } from '../../config/helperFunction';
+import {SkypeIndicator}from 'react-native-indicators';
+import { color } from '../../config/color';
 const MyFollowing = ({navigation}) => {
   const data=[{isBool:true},{isBool:false},{isBool:false},{isBool:true},{isBool:true},{isBool:false}]
     const[FollowingData,setFollowingData] = useState([])
@@ -42,6 +44,10 @@ const MyFollowing = ({navigation}) => {
       name={'Following'}
       backpress={()=> navigation.goBack()}
       />
+      {FollowingData.length>0?
+
+
+     
     <FlatList
     data={FollowingData}
     contentContainerStyle={{marginBottom:hp('10')}}
@@ -49,10 +55,13 @@ const MyFollowing = ({navigation}) => {
       return(
         <View style={styles.container}>
     <View style={styles.innerContainer}>
+      <TouchableOpacity
+      onPress={()=>{navigation.navigate('OthersProfile',{item})}}>
       <Image
         style={styles.image}
         resizeMode="contain"
         source={item.user.profile_image == null ?require('../../images/default_avatar.png'):{uri:item.user.profile_image}}/>
+      </TouchableOpacity>
       <View>
         <Text style={styles.text1}>{item.user.name}</Text>
         <View style={styles.text3Container}>
@@ -99,6 +108,9 @@ const MyFollowing = ({navigation}) => {
       )
     }}
     />
+    :
+    <SkypeIndicator color={color.black}/>
+  }
     </SafeAreaView>
   )
 }

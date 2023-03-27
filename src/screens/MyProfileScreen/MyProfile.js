@@ -82,9 +82,11 @@ const MyProfile = ({navigation}) => {
         })
     }
     useEffect(()=>{
-      GetUserinfo();
+      navigation.addListener('focus', () => {
+        GetUserinfo();
         MyPostList();
-      },[])
+      });
+      },[navigation])
 return(
     <SafeAreaView style={styles.mainContainer}>
     <HeaderComponent
@@ -159,7 +161,7 @@ return(
         <TouchableOpacity style={{height:hp('14'),marginTop:hp('4'),marginHorizontal:wp('3')}} 
         onPress={()=>{navigation.navigate('Post',{item})}}>
         <Image
-        source={item.file_url==null?require('../../images/default_avatar.png'):{uri:item.file_url}}
+        source={item.thumbnail_url!=null?{uri:item.thumbnail_url}:{uri:item.file_url}}
         style={{height:hp('14'),width:wp('27'),borderRadius:20}}
         />
          </TouchableOpacity>

@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
   imagerow:{
     flexDirection:'row',
     paddingHorizontal:wp('4'),
-    alignItems:'center'
+    alignItems:'center',
+    marginTop:hp('2.5')
   },
   imageView:{
     flexDirection:'row',

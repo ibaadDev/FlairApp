@@ -13,11 +13,12 @@ import {useSelector,useDispatch} from 'react-redux';
 import { errorMessage, successMessage } from '../../config/NotificationMessage'
 import types from '../../Redux/types'
 import Video from 'react-native-video'
+import { errorHandler } from '../../config/helperFunction'
   // import {SkypeIndica}
   
 
 
-const Feed = () => {
+const Feed = ({navigation}) => {
 
     const { token } = useSelector(state => state.userData);
     // const { feedData, feedPage } = useSelector(state => state.feedData);
@@ -46,10 +47,12 @@ const Feed = () => {
                   setFeedData(newDataSet);
                 }else{
                   setFeedData(res.data.data);
+                  console.log(res.data.data[0])
                 }
                 setpage(page+1);
               }
             }
+
             
         }).catch((err) => {
           console.log(err)
@@ -61,16 +64,46 @@ const Feed = () => {
     }
 
   
+    const Upvoteaction = (postid)=>{
+      console.log(postid);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      axios.post('https://flairapp.clickysoft.net/api/authorized/posts/upvote/toggle',
+      {
+        post_id:postid
+      }
+      ,config)
+           .then(function (res) {
+            // console.log(res)
+          
+            if(res.data.error) {
+              errorMessage(res.data.error)
+            }
+            else{
+              getFeedList();
+              console.log(res.data)
+              successMessage(res.data.message)
+            }
+
+          })
+          .catch(function (err) {
+            console.log("asdasd =========>",err)
+            errorMessage(errorHandler(err));
+          });
+      
+    }
 
   useEffect(() => {
     getFeedList(true);
 }, []);
 
 
+
+
 const renderItem = ({item}) => {
     return (
       <>
-      {console.log(item)}
         <View style={styles.imagerow}>
         <View style={styles.imageView}>
           {
@@ -112,7 +145,7 @@ const renderItem = ({item}) => {
        :
        <Video  
             source={{uri:item.file_url}}            
-            paused={false}                  
+            paused={true}                  
             style={styles.imagestyle}  
             repeat={false}        
                        
@@ -125,14 +158,22 @@ const renderItem = ({item}) => {
           style={styles.imagestyle}
           /> */}
           <View style={styles.commintsView}>
-              <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}}>
-                  <Image
-                  source={require('../../images/Union1.png')}
+              <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}} onPress={()=>{Upvoteaction(item.id)}}>
+                  {
+                    item.upvoted?<Image
+                    source={require('../../images/Union1.png')}
+                    style={{marginRight:wp('2')}}
+                    />:
+                    <Image
+                  source={require('../../images/Union-1.png')}
                   style={{marginRight:wp('2')}}
                   />
+                  }
+                  
                   <Text style={{marginLeft:wp('2')}}>{item.upvote_count}</Text>
+                  
               </TouchableOpacity>
-              <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}}>
+              <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}} onPress={()=>{navigation.navigate('Comment',{item})}}>
                   <Image
                   source={require('../../images/comment-o.png')}
                   style={{marginRight:wp('2')}}
@@ -148,8 +189,9 @@ const renderItem = ({item}) => {
               </TouchableOpacity>
           </View>
           <Text style={styles.innerView}>
-           <Text style={styles.MainName}>Jeffmusic  </Text>
-           <Text style={styles.secondText}>Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor lora ad.</Text>
+            
+           <Text style={styles.MainName}>{item?.last_comment?.user.user_name}  </Text>
+           <Text style={styles.secondText}>{item?.last_comment?.comment}</Text>
            </Text> 
            <TouchableOpacity style={styles.viewall}>
            <Text >View all comments</Text>

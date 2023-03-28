@@ -1,13 +1,38 @@
 import { View, Text, Image, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
 import { CircleImageComp } from '../../components/CircleImageComp/CircleImageComp'
 import { color } from '../../config/color'
+import axios from 'react-native-axios';
+import {useSelector,useDispatch} from 'react-redux';
 
-const Comment = ({navigation}) => {
+const Comment = ({route,navigation}) => {
+  const { item } = route.params;
   const data = [{},{},{},{}]
   const inputElement = useRef();
+  const { token } = useSelector(state => state.userData);
+  const [Data,setData] = useState([])
+
+  const getCommet = ()=>{
+    let url = "https://flairapp.clickysoft.net/api/authorized/comment?post_id="
+    if(item.id){
+      url = url +item.id
+    }  
+    axios.get(url,{
+      headers:{Authorization: `Bearer ${token}`}
+    }).then((res)=>{
+      console.log(res.data.data),
+      setData(res.data.data)}
+    ).catch((err)=>{
+      console.log(err)
+    })
+  }
+  useEffect(()=>{
+    getCommet();
+  },[])
+
+  
   return (
     <SafeAreaView style={styles.mainContainer}>
         <HeaderComponent
@@ -16,32 +41,32 @@ const Comment = ({navigation}) => {
         name={'Commnets'}/>
         <View style={styles.upperView}>
           <CircleImageComp
-          image={require('../../images/Ellipse1.png')}
+          image={Data[0].user.profile_image == null ?require('../../images/Ellipse1.png'):{uri:Data[0].user.profile_image}}
           styles={styles.mainimage}
           />
           <Text style={styles.innerView}>
-         <Text style={styles.MainName}>martinvue.ca  </Text>
-         <Text style={styles.secondText}>Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor lora ad.</Text>
+         <Text style={styles.MainName}>{`${Data[0].user.name}  `}</Text>
+         <Text style={styles.secondText}>{`${Data[0].comment}  `}</Text>
          </Text>  
          </View>
          <View style={styles.Divider}>
          </View>
          <FlatList
-                    data={data}
+                    data={Data}
                     renderItem={({ item }) => {
                       return(
                        <View style={styles.otherView}>
                         <Image
-                        source={require('../../images/Ellipse1-1.png')}
+                        source={item.user.profile_image == null ?require('../../images/Ellipse1-1.png'):{uri:item.user.profile_image}}
                          styles={styles.Secondimage} 
                          />
                          <View style={styles.SecondinnerView}>
                           <Text style={styles.innerView}>
-                        <Text style={styles.secondName}>martinvue.ca   </Text>
-                        <Text style={styles.secondNameText}>Lorem ipsum dolor sit</Text>
+                        <Text style={styles.secondName}>{`${item.user.name}   `}</Text>
+                        <Text style={styles.secondNameText}>{item.comment}</Text>
                         </Text>  
                         <Text style={styles.time}>
-                         8min ago
+                         {item.comment_at}
                         </Text>
                          </View>
                         </View> )}}

@@ -34,6 +34,8 @@ export const styles = StyleSheet.create({
     },
     Secondimage:{
         marginHorizontal:wp('4'),
+        width:wp('2'),
+        height:hp('2'),
         borderRadius: Math.round(
             Dimensions.get('window').width + Dimensions.get('window').height,
           ),

@@ -15,7 +15,8 @@ import {
         marginTop:hp('2'),
         width:wp('88'),
         height:hp('25'),
-        borderRadius:20
+        borderRadius:20,
+        justifyContent:'center',
      },
      commintsView:{
         flexDirection:'row',

@@ -36,12 +36,12 @@ const Spotlight = ({navigation}) => {
                 setHasMore(false);
               }
               if (res.data.data) {
+                console.log(res.data.data[0])
                 if(feedData.length){
                   let newDataSet = [...feedData, ...res.data.data];
                   setFeedData(newDataSet);
                 }else{
                   setFeedData(res.data.data);
-                  console.log(res.data.data)
                 }
                 setpage(page+1);
               }
@@ -160,7 +160,7 @@ const Spotlight = ({navigation}) => {
                 source={require('../../images/comment-o.png')}
                 style={{marginRight:wp('2')}}
                 />
-                <Text style={{marginLeft:wp('2')}}>21.4k</Text>
+                <Text style={{marginLeft:wp('2')}}>{item.comment_count}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}}>
                 <Image

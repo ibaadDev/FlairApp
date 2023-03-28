@@ -13,8 +13,10 @@ import {useSelector,useDispatch} from 'react-redux';
 import { errorMessage, successMessage } from '../../config/NotificationMessage'
 import types from '../../Redux/types'
 import Video from 'react-native-video'
-import { errorHandler } from '../../config/helperFunction'
-  // import {SkypeIndica}
+import { errorHandler } from '../../config/helperFunction';
+import {SkypeIndicator}from 'react-native-indicators';
+import { color } from '../../config/color';
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
   
 
 
@@ -26,12 +28,15 @@ const Feed = ({navigation}) => {
     const [page, setpage] = useState(1);
     const [feedData, setFeedData] = useState({});
     const [hasMore, setHasMore] = useState(true);
+    const[IsLoading , setIsLoading] = useState(false)
 
     const getFeedList = () => {
+      
       if(hasMore){
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
+        setIsLoading(true)
         axios.get("https://flairapp.clickysoft.net/api/authorized/feed" + (feedData.length ? "?page=" + page : ""),
             config
         ).then((res) => {
@@ -42,10 +47,12 @@ const Feed = ({navigation}) => {
                 setHasMore(false);
               }
               if (res.data.data) {
+                setIsLoading(false)
                 if(feedData.length){
                   let newDataSet = [...feedData, ...res.data.data];
                   setFeedData(newDataSet);
                 }else{
+                  setIsLoading(false)
                   setFeedData(res.data.data);
                   console.log(res.data.data[0])
                 }
@@ -65,7 +72,6 @@ const Feed = ({navigation}) => {
 
   
     const Upvoteaction = (postid)=>{
-      console.log(postid);
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
@@ -81,8 +87,8 @@ const Feed = ({navigation}) => {
               errorMessage(res.data.error)
             }
             else{
-              getFeedList();
-              console.log(res.data)
+              getFeedList(true);
+              console.log(res.data);
               successMessage(res.data.message)
             }
 
@@ -95,8 +101,10 @@ const Feed = ({navigation}) => {
     }
 
   useEffect(() => {
-    getFeedList(true);
-}, []);
+    navigation.addListener('focus', () => {
+      getFeedList(true);
+    });
+}, [navigation]);
 
 
 
@@ -104,6 +112,17 @@ const Feed = ({navigation}) => {
 const renderItem = ({item}) => {
     return (
       <>
+      {/* <MenuOptions>
+        <MenuOption onSelect={() => alert(`Save`)} text='Save' />
+        <MenuOption onSelect={() => alert(`Delete`)} >
+          <Text style={{color: 'red'}}>Delete</Text>
+        </MenuOption>
+        <MenuOption onSelect={() => alert(`Not called`)} disabled={true} text='Disabled' />
+      </MenuOptions> */}
+      <Menu>
+      <MenuItem >Menu item 1</MenuItem>
+      <MenuItem >Menu item 2</MenuItem>
+      </Menu>
         <View style={styles.imagerow}>
         <View style={styles.imageView}>
           {
@@ -170,7 +189,7 @@ const renderItem = ({item}) => {
                   />
                   }
                   
-                  <Text style={{marginLeft:wp('2')}}>{item.upvote_count}</Text>
+                  <Text style={{marginLeft:wp('2')}}>{item?.user?.upvote_count}</Text>
                   
               </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}} onPress={()=>{navigation.navigate('Comment',{item})}}>
@@ -178,7 +197,7 @@ const renderItem = ({item}) => {
                   source={require('../../images/comment-o.png')}
                   style={{marginRight:wp('2')}}
                   />
-                  <Text style={{marginLeft:wp('2')}}>{item.comment_count}</Text>
+                  <Text style={{marginLeft:wp('2')}}>{item?.user?.comment_count}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}}>
                   <Image
@@ -206,15 +225,17 @@ const renderItem = ({item}) => {
         <HeaderComponent 
         name={'Feed'}
         text={true}/>
-       
-         {feedData ?
+       {IsLoading?
+      <SkypeIndicator color={color.black}
+      style={{paddingBottom:hp(8)}}
+      />:
          <FlatList
          data={feedData}
          renderItem={renderItem}
          onEndReached={getFeedList}
          onEndReachedThreshold={0.5}
-       />: <Text>Loadin</Text>
-        }
+       />
+      }
          
     </View>
   )

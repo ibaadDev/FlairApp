@@ -19,7 +19,6 @@ const Tranding = ({navigation}) => {
   const dispatch = useDispatch()
     const {userData, token} = useSelector(state =>state.userData);
     const [TrandingData,setTrandingData] = useState([])
-  //  const TrandingData=useRef(new Array())
     const [LastPage,setLastPage] =useState(0)
     const [IsLoading,setIsLoading] = useState(false);
     const [page, setpage] = useState(1);
@@ -168,16 +167,16 @@ return(
 
     </View>
     <View style={styles.bottomContainer}>
-      <Text style={styles.bottomText}>109 Posts</Text>
+      <Text style={styles.bottomText}>{item.post_count}Posts</Text>
       <View
         style={{borderLeftWidth: 1, height: '100%', borderColor: 'grey'}}
       />
 
-      <Text style={styles.bottomText}>109 Followers</Text>
+      <Text style={styles.bottomText}>{item.followers_count} Followers</Text>
       <View
         style={{borderLeftWidth: 1, height: '100%', borderColor: 'grey'}}
       />
-      <Text style={styles.bottomText}>109 Following</Text>
+      <Text style={styles.bottomText}>{item.following_count} Following</Text>
     </View>
     </TouchableOpacity>
       )

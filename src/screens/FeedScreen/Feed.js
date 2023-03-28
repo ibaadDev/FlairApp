@@ -16,7 +16,6 @@ import Video from 'react-native-video'
 import { errorHandler } from '../../config/helperFunction';
 import {SkypeIndicator}from 'react-native-indicators';
 import { color } from '../../config/color';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
   
 
 
@@ -119,10 +118,10 @@ const renderItem = ({item}) => {
         </MenuOption>
         <MenuOption onSelect={() => alert(`Not called`)} disabled={true} text='Disabled' />
       </MenuOptions> */}
-      <Menu>
+      {/* <Menu>
       <MenuItem >Menu item 1</MenuItem>
       <MenuItem >Menu item 2</MenuItem>
-      </Menu>
+      </Menu> */}
         <View style={styles.imagerow}>
         <View style={styles.imageView}>
           {

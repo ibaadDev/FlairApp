@@ -22,6 +22,7 @@
     "react-native-flash-message": "^0.4.0",
     "react-native-image-picker": "^5.3.1",
     "react-native-indicators": "^0.17.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-material-menu": "^2.0.0",
     "react-native-onesignal": "^5.0.0-beta-01",
     "react-native-responsive-screen": "^1.4.2",

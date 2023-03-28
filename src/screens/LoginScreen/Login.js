@@ -14,7 +14,7 @@ import axios from 'react-native-axios';
 import {useDispatch} from 'react-redux';
 import { OneSignal } from 'react-native-onesignal'
 import types from '../../Redux/types'
-
+// import KeyBoardWrapper from '../../components/Keyboardwraper/keybaordWrapper'
 const Login = ({navigation}) => {
     const handleClick = () => setShow(!show);
   const [show, setShow] = useState(false);
@@ -47,7 +47,8 @@ const Login = ({navigation}) => {
               errorMessage(res.data.error)
             }
             else{
-              OneSignal.setExternalUserId(res.data.user.id.toString());
+              setIsloading(false);
+              // OneSignal.setExternalUserId(res.data.user.id.toString());
               // console.log(res.data)
               successMessage("Login Succeffully")
               navigation.navigate('MybottomTabs')
@@ -70,11 +71,13 @@ const Login = ({navigation}) => {
   };
 
   return (
+    // <KeyBoardWrapper>
     <View style={styles.mainContainer} >
        <View style={styles.logo}>
        <Image source={require('../../images/Group6.png')}/>
         <Text style={styles.name}>Flair</Text>
        </View>
+       
         <LoginInputComp
         placeholder={'Username'}
         value={email}
@@ -103,6 +106,7 @@ const Login = ({navigation}) => {
         <ButtonThemeComp
         style={styles.signBtn}
         text={'Login In'}
+        isLoading={isloading}
         onPress={() => loginUserFun()}
         // onPress={() => {navigation.navigate('MybottomTabs')}}
       />
@@ -116,6 +120,7 @@ const Login = ({navigation}) => {
           </TouchableOpacity>
         </View>
     </View>
+    // </KeyBoardWrapper>
   )
 }
 

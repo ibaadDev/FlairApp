@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native'
+import { View, Text, Image, FlatList, TouchableOpacity, TextInput, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
@@ -11,6 +11,7 @@ import {
 } from 'react-native-responsive-screen';
 import {useSelector,useDispatch} from 'react-redux';
 import {SkypeIndicator}from 'react-native-indicators';
+import KeyBoardWrapper from '../../components/Keyboardwraper/KeyBaordWrapper'
 const Comment = ({route,navigation}) => {
   const { item } = route.params;
   const data = [{},{},{},{}]
@@ -65,11 +66,14 @@ const Comment = ({route,navigation}) => {
 
   
   return (
+   
     <SafeAreaView style={styles.mainContainer}>
+      
         <HeaderComponent
         back={true}
         backpress={()=> navigation.goBack()}
         name={'Commnets'}/>
+       
         {Isloading 
         ?
         <SkypeIndicator color={color.black}
@@ -117,6 +121,7 @@ const Comment = ({route,navigation}) => {
         }
         </>
       }
+       <KeyboardAvoidingView behavior='position'>
         <View style={styles.bottomBar}>
           <View style={styles.bottomViewInsider}>
             <TextInput
@@ -134,6 +139,7 @@ const Comment = ({route,navigation}) => {
          </View>
 
         </View>
+        </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }

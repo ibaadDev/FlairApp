@@ -22,7 +22,8 @@ export const styles = StyleSheet.create({
     },
     forgetbtnstyle:{
         alignSelf:'flex-end',
-        margin:10
+        margin:10,
+        marginRight:wp('9')
     },
     forgettext:{
         color:color.primaryColor,

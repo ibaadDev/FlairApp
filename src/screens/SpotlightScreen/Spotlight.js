@@ -13,6 +13,7 @@ import axios from 'react-native-axios';
 import {useSelector,useDispatch} from 'react-redux';
 import { errorMessage, successMessage } from '../../config/NotificationMessage'
 import Video from 'react-native-video'
+import { Following } from '../../config/helperFunction'
 
 const Spotlight = ({navigation}) => {
     const data=[{},{},{}]
@@ -54,6 +55,10 @@ const Spotlight = ({navigation}) => {
       }else{
         successMessage("No more data found.");
       }
+    }
+    const Follower = (item)=>{
+      Following(item.user.id,token)
+      getFollowinginfo();
     }
     useEffect(()=>{
       getFeedList(true);}
@@ -101,7 +106,7 @@ const Spotlight = ({navigation}) => {
           isBool={item.user.is_following_by_me == 0?true:false}
           texColor={ item.user.is_following_by_me == 0 ? 'white': 'grey' }
           bg={item.user.is_following_by_me == 0 ?  color.primaryColor :'white'}
-          // onPress={() => setBool(prev => !prev)}
+          onPress={() => {}}
           text={item.user.is_following_by_me == 0 ?'Follow' : 'Following'}
         />
         :null}

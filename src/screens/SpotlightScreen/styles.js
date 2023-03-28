@@ -27,6 +27,7 @@ import {
         margin:3,
         borderRadius:10,
         backgroundColor: '#F9F9F9',
+        
       },
       innerContainer: {
         width: wp('90'),

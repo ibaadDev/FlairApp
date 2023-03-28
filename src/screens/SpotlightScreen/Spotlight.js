@@ -71,7 +71,7 @@ const Spotlight = ({navigation}) => {
             />
              <FlatList
               data={feedData}
-              contentContainerStyle={{marginBottom:hp('10')}}
+              contentContainerStyle={{marginBottom:hp('20')}}
               onEndReached={getFeedList}
               onEndReachedThreshold={0.5}
               renderItem={({ item }) => {
@@ -153,7 +153,7 @@ const Spotlight = ({navigation}) => {
                 source={require('../../images/Union1.png')}
                 style={{marginRight:wp('2')}}
                 />
-                <Text style={{marginLeft:wp('2')}}>11.3k</Text>
+                <Text style={{marginLeft:wp('2')}}>{item.upvote_count }</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{marginHorizontal:wp('3'),flexDirection:'row'}}>
                 <Image
@@ -167,7 +167,7 @@ const Spotlight = ({navigation}) => {
                 source={require('../../images/retweet1.png')}
                 style={{marginRight:wp('2')}}
                 />
-                <Text style={{marginLeft:wp('2')}}>11k</Text>
+                <Text style={{marginLeft:wp('2')}}>{item.user.repost_count}</Text>
             </TouchableOpacity>
         </View>
     </View>

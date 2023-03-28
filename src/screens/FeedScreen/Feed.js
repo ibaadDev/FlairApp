@@ -1,9 +1,8 @@
-import {  Image, Text, TouchableOpacity, View, FlatList } from 'react-native'
+import {  Image, Text, TouchableOpacity, View, FlatList,Alert } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { styles } from './styles'
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
 import { CircleImageComp } from '../../components/CircleImageComp/CircleImageComp'
-import Entypo from 'react-native-vector-icons/Entypo';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -16,19 +15,25 @@ import Video from 'react-native-video'
 import { errorHandler } from '../../config/helperFunction';
 import {SkypeIndicator}from 'react-native-indicators';
 import { color } from '../../config/color';
-  
+ import Entypo from 'react-native-vector-icons/Entypo';
+import {   Menu, MenuOptions,  MenuOption, MenuTrigger, MenuProvider  } from 'react-native-popup-menu';
+
 
 
 const Feed = ({navigation}) => {
 
-    const { token } = useSelector(state => state.userData);
-    // const { feedData, feedPage } = useSelector(state => state.feedData);
+    const { token,userData } = useSelector(state => state.userData);
     const dispatch = useDispatch();
     const [page, setpage] = useState(1);
     const [feedData, setFeedData] = useState({});
     const [hasMore, setHasMore] = useState(true);
     const[IsLoading , setIsLoading] = useState(false)
-
+const [isbool,setisbool] = useState(false)
+const handlebool =()=>{
+  console.log("hello");
+  setisbool(!isbool);
+  return isbool
+}
     const getFeedList = () => {
       
       if(hasMore){
@@ -69,6 +74,19 @@ const Feed = ({navigation}) => {
       }
     }
 
+    const Icon = ()=>{
+      return(
+        <>
+        <View style={{backgroundColor:'black',height:hp('2'),width:wp('4')}}></View>
+        <Entypo
+        onPress={onPress}
+        name={'dots-three-vertical'}
+        color={'black' }
+        size={hp('3')}
+      />
+      </>
+      )
+    }
   
     const Upvoteaction = (postid)=>{
       const config = {
@@ -111,18 +129,7 @@ const Feed = ({navigation}) => {
 const renderItem = ({item}) => {
     return (
       <>
-      {/* <MenuOptions>
-        <MenuOption onSelect={() => alert(`Save`)} text='Save' />
-        <MenuOption onSelect={() => alert(`Delete`)} >
-          <Text style={{color: 'red'}}>Delete</Text>
-        </MenuOption>
-        <MenuOption onSelect={() => alert(`Not called`)} disabled={true} text='Disabled' />
-      </MenuOptions> */}
-      {/* <Menu>
-      <MenuItem >Menu item 1</MenuItem>
-      <MenuItem >Menu item 2</MenuItem>
-      </Menu> */}
-        <View style={styles.imagerow}>
+        <View style={styles.imagerow} key={item.id}>
         <View style={styles.imageView}>
           {
             item.user.profile_image !== null?
@@ -135,20 +142,47 @@ const renderItem = ({item}) => {
           />
           }
         
-          <Text style={styles.NameTag}>{item.user.user_name}</Text>
+          <Text style={styles.NameTag}>{item.user.name}</Text>
     
         </View>
-        <Entypo
-          //   onPress={props?.eyeIconPress}
-            name={'dots-three-vertical'}
-            color={'black' }
-            style={{
-              marginLeft: 'auto',
-              marginRight: wp('3'),
-              paddingLeft: wp('2'),
-            }}
-            size={hp('3')}
-          />
+        <MenuProvider style={{flex:1}} >
+        <View style={{zIndex:999}}>
+        <Menu onSelect={value => {console.log(value)}}>
+      <MenuTrigger>
+      <Entypo
+        // onPress={onPress}
+        name={'dots-three-vertical'}
+        color={'black' }
+        size={hp('3')}
+        style={{
+          marginLeft: 'auto',
+          marginRight: wp('3'),
+          paddingLeft: wp('2'),
+        }}
+      />
+      </MenuTrigger>
+      <MenuOptions
+      customStyles={{optionWrapper: { padding: 5}}}
+      >
+        {item.user.id == userData.id
+        ?
+        <>
+        <MenuOption value="Delete" text="Delete" />
+        <MenuOption value="Share" text="Share" />
+        <MenuOption  text= 'Sign Out'/>
+        </>
+        :
+        <>
+        <MenuOption value="Unfollow" text="Unfollow" />
+        <MenuOption value="ReportAbuse" text="ReportAbuse" />
+        <MenuOption value="Share" text="Share" />
+        </>
+      }
+    </MenuOptions>
+  </Menu>
+  </View>
+                </MenuProvider>
+                
          </View>
          {item.type=="image"?
          <Image
@@ -211,7 +245,7 @@ const renderItem = ({item}) => {
            <Text style={styles.MainName}>{item?.last_comment?.user.user_name}  </Text>
            <Text style={styles.secondText}>{item?.last_comment?.comment}</Text>
            </Text> 
-           <TouchableOpacity style={styles.viewall}>
+           <TouchableOpacity style={styles.viewall} onPress={()=>{navigation.navigate('Comment',{item})}}>
            <Text >View all comments</Text>
            </TouchableOpacity>
            </>
